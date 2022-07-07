@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Fee</title>
+</head>
+
+<body>
+    <h1 style="color: blue; text-align: center;">주차요금 계산</h1>
+    <h2>안녕하세요 <%=user%>님🤣</h2>
+    <p><%=user%>님이 사용한 시간은 <%=used%>(분)입니다.</p>
+    
+    
+    <p>지불하실 금액은 <%=fee()%>원입니다.</p>
+
+    <table>
+        <tr>
+            <th>이용시간</th>
+            <th>사용요금</th>
+        </tr>
+        <tr>
+            <td><%=used%>(분)</td>
+            <td><%=fee();%>(원)</td>
+        </tr>
+    </table>
+    <% if(used>=30) { %>
+            30분부터는 10분당 400원입니다.
+    <% }  %>   
+</body>
+</html>
