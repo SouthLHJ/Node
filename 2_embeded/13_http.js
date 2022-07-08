@@ -15,7 +15,9 @@ http.createServer((req,res)=>{
     // if(pathname.startsWith("/static")){
     //     fs.createReadStream(path.join("..","HTML",pathname)).pipe(res);
     // }
-    if(pathname.startsWith("/static")){
+    if(pathname.startsWith("/static")){ //이미지를 src=으로 선언해준 파일은 자동으로 불러올 수가 없다. 그래서 이미지를 불러오기위해
+                                //들어온 url에서 pathname을 통해 /static 폴더에 넣어둔 이미지를 자동으로 불러올 수 있게 한다.
+                                //이러한 src를 통해서 선언된것들은 static 폴더에 넣어두고 하는게 룰이다.
         fs.createReadStream(path.join("..","Javascript","game-avoid",pathname)).pipe(res);
     }
     if(pathname === "/" || pathname==="/index"){

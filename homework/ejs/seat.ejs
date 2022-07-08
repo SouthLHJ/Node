@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        div {
+            margin: 10px;
+            align-items: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #D6EEEE;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h2>범죄도시 2</h2>
+        <small>좌석을 선택해주세요.(최대2개)</small>
+    </div>
+    <div style="width: 70%;">
+        <form>
+            <input type="hidden" value="<%= %>" />
+        <table style="margin-bottom: 10px;">
+            <tr style="height: 50px; background-color: #2fc088;">
+                <td colspan="10" style="text-align: center;">스크린</td>
+            </tr>
+            <% for(let row=1; row<=5; row++) {%>
+                <tr>
+                <%for(let seat= 1; seat <= 10 ; seat++  ){%>
+                    <td><input type="checkbox" value="<%=row +'-' + seat %>"></td>
+                <%}%>
+                </tr>
+            <% } %>
+        </table>
+        <button type="submit">예약확정</button>
+        <button type="submit">재선택</button>
+    </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Output</title>
+</head>
+<body>
+    <h2 style="text-align: center ; ">차량 번호와 이용시간 입력해주세요(비보호)</h2>
+    <form action="/input" method="get">
+        <p style="size: 100%;">차량번호</p>
+        <input type="text" name="user">
+        <p style="size: 100%;">이용시간</p>
+        <input type="text" name="used">
+        <button type="submit">입력완료</button>
+    </form>
+
+    <h2 style="text-align: center ; ">차량 번호와 이용시간 입력해주세요(보호)</h2>
+    <form action="/inputHidden" method="post">
+        <p style="size: 100%;">차량번호</p>
+        <input type="text" name="user">
+        <p style="size: 100%;">이용시간</p>
+        <input type="text" name="used">
+        <button type="submit">입력완료</button>
+    </form>
+</body>
+</html>
