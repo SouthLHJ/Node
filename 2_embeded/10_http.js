@@ -30,7 +30,7 @@ const server = http.createServer((req,res)=>{
     console.log(req.url, req.method); // <GET : 사용자가 요청한거. 검색: 192.168.4.35:8080/message/search
                                     // 사용자가 서버 측에 요청한 path와 query를 분리
     res.end();
-}).listen(8080,()=>{
+}).listen(8081,()=>{
     console.log("Server Start")
 });                            // .on은 리턴 값이 this가 나오므로 체이닝이 가능해서 .listen을 할 수 있다.
 

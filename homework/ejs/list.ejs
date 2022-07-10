@@ -2,6 +2,9 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         div {
             margin: 10px;
@@ -15,34 +18,39 @@
     <h2>영화 무료 관람 예약 <small>(영화사 이벤트 2022.07.08 한정)</small></h2>
     <div style="display: flex;">
         <div>
-            <label>토르 - 러브 앤 썬더</label>
-            <p>
-                <a href="">
-                    <img src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85999/85999_320.jpg" width="200px" />
-                </a>
+            <label><%= movie[0].name %></label>
+            <p>         
+                <a href = "/seat?code=<%=movie[0].id%>">
+                    <img src = "<%=movie[0].img%>" width="200px" >
+                </a>                  
+               
             </p>
         </div>
         <div>
-            <label>탑건-매버릭</label>
-
-            <p>
-                <a href=""><img src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000082/82120/82120_320.jpg"
-                        width="200px" /></a>
+            <label><%= movie[1].name %></label>
+            <p>         
+                <a href = "/seat?code=<%=movie[1].id%>">
+                    <img src = "<%=movie[1].img%>" width="200px" >
+                </a>                  
+               
             </p>
         </div>
         <div>
-            <label>헤어질 결심</label>
-            <p>
-                <a href=""><img src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85852/85852_320.jpg"
-                    width="200px" /></a>
+            <label><%= movie[2].name %></label>
+            <p>         
+                <a href = "/seat?code=<%=movie[2].id%>">
+                    <img src = "<%=movie[2].img%>" width="200px" >
+                </a>                  
+               
             </p>
         </div>
         <div>
-            <label>범죄도시 2</label>
-            <p>
-                <a href=""><img src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85813/85813_320.jpg"
-                    width="200px" /></a>
-
+            <label><%= movie[3].name %></label>
+            <p>         
+                <a href = "/seat?code=<%=movie[3].id%>">
+                    <img src = "<%=movie[3].img%>" width="200px" >
+                </a>                  
+               
             </p>
         </div>
     </div>

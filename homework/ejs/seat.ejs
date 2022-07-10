@@ -2,6 +2,9 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         div {
             margin: 10px;
@@ -26,12 +29,13 @@
 
 <body>
     <div>
-        <h2>범죄도시 2</h2>
+        <h2><%=movie[0].name%></h2>
         <small>좌석을 선택해주세요.(최대2개)</small>
     </div>
     <div style="width: 70%;">
-        <form>
-            <input type="hidden" value="<%= %>" />
+        <form action="/reserve" method="post">
+            <input type="hidden" value="<%=movie[0].id%>" name="code">
+            <input type="text" value="예약 전화번호를 작성하세요" name="userID"  style="margin-bottom: 10px;"/>
         <table style="margin-bottom: 10px;">
             <tr style="height: 50px; background-color: #2fc088;">
                 <td colspan="10" style="text-align: center;">스크린</td>
@@ -39,15 +43,35 @@
             <% for(let row=1; row<=5; row++) {%>
                 <tr>
                 <%for(let seat= 1; seat <= 10 ; seat++  ){%>
-                    <td><input type="checkbox" value="<%=row +'-' + seat %>"></td>
+                    <td><input style="text-align: center;" type="checkbox" value="<%=row +'-' + seat %>" name="seat" onchange="maxSeat(this)">
+                        <p style="font-size: small;"><%=row%>열 <%=seat%>행</p>
+                    </td>
                 <%}%>
                 </tr>
             <% } %>
         </table>
         <button type="submit">예약확정</button>
-        <button type="submit">재선택</button>
+        <button type="reset">재선택</button>
     </form>
     </div>
+    <script>
+        let seatEA = [];
+        function maxSeat(obj){
+            if(seatEA.includes(obj.value)){
+                seatEA = seatEA.filter((elm)=>elm !== obj.value);
+                obj.checked = false;
+            }else{
+                if(seatEA.length<2){
+                    seatEA.push(`${obj.value}`);
+                }else{
+                    alert("최대 2개입니다.");
+                    obj.checked = false;
+                }
+            }
+            console.log(seatEA);
+               
+        }
+    </script>
 </body>
 
 </html>
