@@ -24,9 +24,12 @@ const movies = [
 http.createServer((req,res)=>{
     res.setHeader("content-type", "text/html; charset=utf-8"); 
     const pathname = url.parse(req.url).pathname;
-    const query = url.parse(req.url,true).query;
+    const query = url.parse(req.url,true).query; 
+    //(사진 저장된 루트 찾아가기) 이미지파일 혹은 css 파일, js 파일 같은 경우는 바로 제공될 수 있게 특정한 경로에 모아두고
+    //                          그 경로로 요청이 들어오면 바로 pipe()로 전송해주자.
     if(pathname.startsWith("/static")){ 
-        fs.createReadStream(path.join(__dirname,pathname)).pipe(res);
+        //fs(file system)을 통해 createReadStream을 이용해서(읽기) 경로를 넣어주고 .pipe(res)로 바로 서버응답 전달.
+        return fs.createReadStream(path.join(__dirname,pathname)).pipe(res);
     }
     if(pathname === "/list"){
         ejs.renderFile(path.join(__dirname,"ejs","list.ejs"),{
@@ -37,9 +40,20 @@ http.createServer((req,res)=>{
             })
             res.end(data);
         })
+    /* 이렇게 짜도 좋다
+    if(["/list,"/in","/""].includes(pathname)){~~~~ 
+        let html = await ejs.renderFile(path.join(__dirname,"ejs","list.ejs"),{movie : movies,})
+        res.writeHead(200, { "content-type" : "text-html,charset=utf-8" })
+        res.end(html);
+    */
     }else if (pathname === "/seat"){
-        console.log(pathname)
-        console.log(query)
+        // /list에서 [GET]방식 query로 영화 id값이 code라는 이름으로 전달되게 설계함
+        // 해당 id의 영화정보를 찾아서 렌더링할 때 넘겨주는 것까지 백엔드
+        // let target = movies.find((elm)=>{elm.id == query.id}); // 조건에 부합하는 첫 번째 요소를 반환한다. target은 {id: name: img:}객체가 저장됨.
+        // if(!query.code || !target){ //없는 코드가 반환되면 원래 페이지로 반환되게 넣는 것도 센스!
+        //     res.writeHead(302, {"Location":"/list"}); -> 302,{"Location" : "~~"} 리다이렉트라고 부른다.
+        //     return res.end();
+        // }
         ejs.renderFile(path.join(__dirname,"ejs","seat.ejs"),{
             movie : movies.filter((elm)=>{
                 if(elm.id === query.code){
@@ -53,13 +67,22 @@ http.createServer((req,res)=>{
             res.end(data);
         })
     }else if (pathname === "/reserve"){
+        // 요청을 Post로 처리할꺼라 받은 데이터를 추출하는 과정이 추가된다.
         let movie;
         let seat = [];
         let userID;
-        req.on("data", (data)=>{
-            params = new url.URLSearchParams(data.toString());
-            movie = params.get("code");
-            seat = params.getAll("seat");
+        let recv = "";
+        //데이터를 얻어오는것과 얻어오는것을 가지고 분해하는걸 분리해야한다.
+        //        ㄴ "data"                     ㄴ "end"
+        //용량이 커지면 on data가 자주 발생 시 컴퓨터가 뻑난다.
+        req.on("data", (chunk)=>{
+            recv += chunk;
+        })
+        req.on("end", ()=>{
+            //data.toString() === recv .... 이 전에 내가 짰던건 data변수에 다 저장해서 그걸 toString했는데...선생님은 recv에 문자열로 저장하게 해놓음
+            const params = new url.URLSearchParams(recv);
+            movie = params.get("code");     // .get() => 맨 처음 일치되는 데이터 하나가 추출 (string)
+            seat = params.getAll("seat");   // .getAll() => 일치되는 데이터 전부가 배열로 추출 (object)
             userID = params.get("userID");
             console.log (params, movie, seat, userID)
             ejs.renderFile(path.join(__dirname,"ejs","reserve.ejs"),{
@@ -73,7 +96,6 @@ http.createServer((req,res)=>{
             }).then(data =>{
                 res.writeHead(200, {
                     "content-type" : "text-html,charset=utf-8"
-                    
                 })
                 res.end(data);
             })

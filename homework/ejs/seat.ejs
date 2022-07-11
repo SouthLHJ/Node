@@ -36,30 +36,45 @@
         <form action="/reserve" method="post">
             <input type="hidden" value="<%=movie[0].id%>" name="code">
             <input type="text" value="예약 전화번호를 작성하세요" name="userID"  style="margin-bottom: 10px;"/>
-        <table style="margin-bottom: 10px;">
-            <tr style="height: 50px; background-color: #2fc088;">
-                <td colspan="10" style="text-align: center;">스크린</td>
-            </tr>
-            <% for(let row=1; row<=5; row++) {%>
-                <tr>
-                <%for(let seat= 1; seat <= 10 ; seat++  ){%>
-                    <td><input style="text-align: center;" type="checkbox" value="<%=row +'-' + seat %>" name="seat" onchange="maxSeat(this)">
-                        <p style="font-size: small;"><%=row%>열 <%=seat%>행</p>
-                    </td>
-                <%}%>
+            <table style="margin-bottom: 10px;">
+                <tr style="height: 50px; background-color: #2fc088;">
+                    <td colspan="10" style="text-align: center;">스크린</td>
                 </tr>
-            <% } %>
-        </table>
-        <button type="submit">예약확정</button>
-        <button type="reset">재선택</button>
-    </form>
+                <% for(let row=1; row<=5; row++) {%>
+                    <tr>
+                    <%for(let seat= 1; seat <= 10 ; seat++  ){%>
+                        <td><input type="checkbox" value="<%=row +'-' + seat %>" name="seat" onchange="maxSeat(this)">
+                            <p style="font-size: small;"><%=row%>열 <%=seat%>행</p>
+                        </td>
+                    <%}%>
+                    </tr>
+                <% } %>
+            </table>
+            <button type="submit">예약확정</button>
+            <button type="reset" onclick="rst()">재선택</button>
+        </form>
     </div>
     <script>
         let seatEA = [];
-        function maxSeat(obj){
-            if(seatEA.includes(obj.value)){
-                seatEA = seatEA.filter((elm)=>elm !== obj.value);
-                obj.checked = false;
+        /*
+            onchange(onclick) ="maxSeat(event)"일 경우
+            function limit(event){
+                if(event.target.checked){ 
+                    count ++;
+                }else {
+                    if(count <2){
+                        count--;
+                    }else{
+                        event.preventDefault() -> 이벤트 발생하는걸 취소시킴.
+                    }
+                }
+            }
+        */
+        
+       function maxSeat(obj){
+           if(seatEA.includes(obj.value)){
+               seatEA = seatEA.filter((elm)=>elm !== obj.value);
+               obj.checked = false;
             }else{
                 if(seatEA.length<2){
                     seatEA.push(`${obj.value}`);
@@ -68,9 +83,14 @@
                     obj.checked = false;
                 }
             }
-            console.log(seatEA);
-               
+            // console.log(seatEA);
         }
+        function rst(){
+            seatEA = [];
+            // console.log(seatEA);
+        }
+        
+
     </script>
 </body>
 

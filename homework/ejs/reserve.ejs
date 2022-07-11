@@ -16,6 +16,9 @@
     <p style="font-size: large ;">선택하신 [<%=movie[0].name%>] 무료 관람 신청이 접수되었습니다.</p>
     <p style="font-size: large ;">
         접수된 좌석 번호 : <%=rsvSeat%>
+        접수된 좌석 번호 : <% rsvSeat.forEach(element => { %>
+                                [<%= element %>]
+                        <%}); %>
     </p>
 </body>
 
