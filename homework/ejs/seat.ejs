@@ -35,7 +35,8 @@
     <div style="width: 70%;">
         <form action="/reserve" method="post">
             <input type="hidden" value="<%=movie[0].id%>" name="code">
-            <input type="text" value="예약 전화번호를 작성하세요" name="userID"  style="margin-bottom: 10px;"/>
+            <p>예약 전화번호를 작성하세요</p>
+            <input type="text" placeholder="010-0000-0000" name="userID"  style="margin-bottom: 10px;"/>
             <table style="margin-bottom: 10px;">
                 <tr style="height: 50px; background-color: #2fc088;">
                     <td colspan="10" style="text-align: center;">스크린</td>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>express</title>
+</head>
+<body>
+    <h1>요청 처리 테스트(GET)</h1>
+    <form action="/req/2" method="get">
+        <p> <!--사용자가 작성하기전에 예시로 불투명하게 보여주고 싶을 때 placeholder를 쓰면됨-->
+        <input type="text" name="visitor" placeholder="방문자 이름"/>
+        </p>
+        <P>
+           <textarea name="comment" placeholder="하고 싶은 말"></textarea>
+        </P>
+        <p>
+            <button type="submit">전송</button>
+        </p>
+    </form>
+    <h1>요청 처리 테스트(POST)</h1>
+                            <!-- POST 요청 부분이 어떤 형식으로 서버로 들어갈지 설정하는 거. enctype=" "-->
+    <form action="/req/2" method="post" >
+        <p>
+            <input type="text" name="visitor" value="방문자 이름"/>
+        </p>
+        <P> <!--textarea는 value 값이 없으므로 사이에 text로 넣어놔야한다.-->
+            <textarea name="comment" >하고 싶은 말</textarea>
+        </P>
+        <p>
+            <button type="submit">전송</button>
+        </p>
+
+    </form>
+</body>
+</html>
