@@ -1,5 +1,5 @@
 /*
-
+    Cookie 게임 로그인 창 및 게임창 만들기
 */
 const http = require("http");
 const uuid = require("uuid");
@@ -20,22 +20,26 @@ function cookieParser(str){
     return cookies;
 }
 
-const sessions = {};
+const sessions = new Map; //(key : value 구조)
 const namePool = [];
 http.createServer(async(req,res)=>{
     if(req.url ==="/favicon.ico"){
         res.statusCode=404;
         return res.end();
     }
-    const recvCookie = cookieParser(req.headers.cookie);
+    const recvCookie = cookieParser(req.headers.cookie); //쿠키분해
     let currentUserSession;
-    if(!recvCookie.sessionId){ // 쿠키 없다.
+    // 쿠키 유무 체크 (유저별로 개인저장소 만들어주기)
+    if(!recvCookie.sessionId){
         const uk = uuid.v4();
-        sessions[uk]={};//프로퍼티명 uk 인 저장소 하나 생성
+        sessions.set(uk,{});//key : uk , value : 공객체
         res.setHeader("set-cookie","sessionId="+uk); // 서버가 쿠키에 sessionId를 uk값으로 할당
-        currentUserSession = sessions[uk]; 
+        currentUserSession = sessions.get(uk); //유저한테 value값 즉, 저장소 할당.
     }else{
-        currentUserSession  = sessions[recvCookie.sessionId];
+        if(sessions.get(recvCookie.sessionId) === undefined){
+            sessions.set(recvCookie.sessionId);
+        }
+        currentUserSession  = sessions.get(recvCookie.sessionId);
     }
     //===================
     if(req.url ==="/game"){
@@ -50,7 +54,7 @@ http.createServer(async(req,res)=>{
         let html = await ejs.renderFile(path.join(__dirname,"view","login.ejs"), {msg : ""});
         return res.end(html);
     }else if(req.url.startsWith("/session")){
-        let query = url.parse(req.url,true).query;
+        let query = url.parse(req.url,true).query; //GET 방식으로 정보가 들어온것을
         // form에서 전달 받을 때 input => name="name"으로 설정
         if(namePool.includes(query.name)){ //배열에서 이미 같은 이름이 있을 경우에는.. (방법2로 Set 객체 사용 가능)
             let html =await ejs.renderFile(path.join(__dirname,"view","login.ejs"), {msg : "이미 사용중인 이름입니다."});
