@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            background-color: #93c571;
+        }
+    </style>
+</head>
+
+<body>
+    <b><%=currentUserSession.playerName%></b> 게임 진행 중
+    <canvas width="600px" height="400px"></canvas>
+    <script>
+
+
+class Rectangle {
+    constructor(x, y, width, height, rx, ry, rwidth, rheight) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        
+        this.rx = rx;
+        this.ry = ry;
+        this.rwidth = rwidth;
+        this.rheight = rheight;
+    };
+    translate(tx, ty) {
+        this.x += tx;
+        this.y += ty;
+
+        this.rx += tx;
+        this.ry += ty;
+    };
+    crashWith(other) { // 상대 객체를 매개 변수로 받음
+        if ( (other.y > this.height && other.y + other.height < this.ry) || this.x > other.x + other.width || this.x + this.width < other.x ) {
+            return false;
+        } else {
+            return true;
+        };
+    };
+    toArray() {
+        return [[this.x, this.y, this.width, this.height], [this.rx, this.ry, this.rwidth, this.rheight]];
+    }
+};
+class Wall extends Rectangle {
+    constructor(speed=5) {
+        super(600,0,0,0,  600,0,0,0);
+        this.color = "White";
+        this.speed = speed;
+        this.width = 10*(Math.random()*3 + 2);
+        this.height = Math.random()*300;
+
+        this.ry = this.height + 10*(Math.random()*3 + 8);
+        this.rwidth = this.width;
+        this.rheight = 400 - this.ry;
+
+    };
+    slide() {
+        super.translate(-this.speed, 0);
+    }
+};
+
+
+class User extends Rectangle {
+    constructor() {
+        super(5,370,25,25);
+    };
+    fly() {
+        super.translate(0, -5);
+        if(this.y < 0) {
+            this.y = 0
+        }
+    };
+    fall() {
+        super.translate(0, 8);
+        if (this.y > 370 ) {
+            this.y = 370;
+        }
+    }
+}
+
+
+
+
+
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let frame = 0;
+        let walls = [];
+
+        const user = new User();
+        let procedure;
+
+        canvas.addEventListener("mouseenter", function () {
+            if (procedure) {
+                clearInterval(procedure);
+            }
+            procedure = setInterval(function () {
+                user.fly();
+            }, 100);
+        });
+
+
+        canvas.addEventListener("mouseleave", function () {
+            if (procedure) {
+                clearInterval(procedure);
+            }
+            procedure = setInterval(function () {
+                user.fall();
+            }, 100);
+        });
+
+
+        let main = setInterval(function () {
+            if (frame % 50 === 0) {
+                walls.push(new Wall());
+            };
+
+            ctx.clearRect(0, 0, 600, 400);
+
+            ctx.fillStyle = "orange";
+            ctx.fillRect(...(user.toArray()[0]));
+
+            ctx.fillStyle = "green";
+            ctx.fillText(`Score : ${frame}`, 10, 15);
+
+            walls.forEach(function (obj) {
+                obj.slide();
+                ctx.fillStyle = obj.color;
+                ctx.fillRect(...(obj.toArray()[0]));
+
+                ctx.fillStyle = obj.color;
+                ctx.fillRect(...(obj.toArray()[1]));
+            });
+
+            walls = walls.filter(function (obj) {
+                return (obj?.x +obj?.width) >= 0;
+            });
+
+            //console.log(walls);
+
+
+
+            walls.forEach(function (obj) {
+                if (obj.crashWith(user)) {
+                    alert("게임 끝");
+                    clearInterval(main);
+                };
+            });
+            
+
+
+            //let crashed = walls.some(function (obj) {
+            //    return obj.crashWith(user);
+            //});
+            //if (crashed) {
+            //    clearInterval(main);
+            //}
+
+            frame++;
+        }, 100)
+
+
+    </script>
+
+</body>
+
+</html>
