@@ -10,8 +10,15 @@ const movies = [
     {id : "mv04", name : "범죄도시2", img :"/static/crimecity2.jpg"},
 
 ]
+let reserved = new Map();
+
+!function(){
+    movies.forEach(elm => {
+        reserved.set(elm.id,[]);
+    });
+}();
 //미들웨어
-app.use(express.urlencoded()); //POST 요청 받는 확장자 활성화
+app.use(express.urlencoded({"extended":true})); //POST 요청 받는 확장자 활성화
 
 app.use(express.static(path.join(__dirname,"..","homework"))) //첨부 파일 경로 지정
 
@@ -32,7 +39,6 @@ app.get("/list",(req,res)=>{
     
 })
 
-let reserved = {};
 app.get("/seat",(req,res)=>{
     let query = req.query;
     res.status(200).render("seat",{
@@ -46,25 +52,34 @@ app.get("/seat",(req,res)=>{
 
 app.post("/reserve",(req,res)=>{
     let body = req.body;
+    let save = reserved.get(body.code);
+    let saveSeat = [];
     let chkreserved =false;
-    for(let key in reserved){
-        body.seat.forEach(elm=>{
-            console.log(elm);
-                if(reserved.key === elm){
-                    chkreserved = true;
-                }
-        })
-    }
-    console.log(chkreserved);
-    if(chkreserved === true){
-        res.redirect("/seat");
-        res.send("이미 예약된 좌석입니다.")
+
+    body.seat.forEach((elm)=>{
+        if(save.includes(elm)){
+            chkreserved = true;
+            saveSeat.push(elm);
+        }
+    })
+
+    if(chkreserved){
+        /* 왜 안될까?
+        let target = movies.filter((elm)=>{
+            if(elm.id === body.code){
+                return true;
+            }
+        });
+        res.redirect("seat",{target});
+        res.send(`<script> alert("${saveSeat}는 이미 예약된 좌석입니다.")</script>`);
+        */
+        res.send(`<script> alert("${saveSeat}는 이미 예약된 좌석입니다.");location.href=document.referrer;</script>`);
+        //alert이후에 res.redirect("")를 쓰면 터진다. res.send로 location.href :페이지 이동. document.referrer. 뒤로가기 후 새로고침
     }else{
-        let save = reserved[body.code];
-        body.seat.forEach(elm=>{
-            save.push(elm)
+        body.seat.forEach((elm)=>{
+            save.push(elm);
         })
-        reserved[body.code] = save;
+        reserved.set(body.code,save);
         console.log(reserved);
         
         res.status(200).render("reserve",{

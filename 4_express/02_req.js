@@ -4,9 +4,8 @@ const path = require("path")
 const app = express();
 
 //Post의 사용자 요청을 req.body을 하고 싶을땐 미들웨어에서 기능 활성화 해야한다.
-
 app.use(express.urlencoded({"extended":true}));
-//app.use(express.urlencoded()); 요래 해도 추천방법이 뜨긴하지만 작동은 한다.
+    //ㄴ app.use(express.urlencoded()); 요래 해도 추천방법이 뜨긴하지만 작동은 한다.
 
 app.get("/req/1",(req,res)=>{
     // console.log(req);
