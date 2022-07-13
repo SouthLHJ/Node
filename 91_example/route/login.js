@@ -2,42 +2,60 @@
 const express = require("express");
 
 const login = express.Router();
-//미들웨어
+
 let saveNick = [];
 !function(){
     saveNick.push("");
 }();
 
+//미들웨어
+
 //셋팅
-login.set("view engine","ejs"); //render의 확장자 지정
-
-login.set("views", path.join(__dirname,"view"));
-
 
 //라우팅
-login.get("/",(req,res,next)=>{
-    res.location = "/login";
-    next();
-})
-
 
 login.get("/login",(req,res,next)=>{
+    console.log("login 진입완료")
     res.status(200).render("login",{
         msg : "",
     })
 })
-
-
 login.get("/session",(req,res)=>{
-    let query = req.query;
-    if(saveNick.includes(req.session.nick)){
-        res.status(200).render("login",{
-            msg : "이미 사용중인 이름입니다.",
-        })
+    console.log("session 진입완료")
+    let query = req.query??"";
+    if(query === ""){
+        res.redirect("/account/login");
     }else{
-        saveNick.push(req.session.nick);
+        if(saveNick.includes(query.name)){
+            res.status(200).render("login",{
+                msg : "이미 사용중인 이름입니다.",
+            })
+        }else{
+            req.session.nick = query.name;
+            saveNick.push(query.name);
+            res.redirect("../game/start");
+        }
     }
 })
 
 
 module.exports = login;
+
+/*
+let query = req.query;
+    req.session.nick ?? "" ; 
+    if(!req.session.nick){
+        req.session.nick = query.name;
+        saveNick.push(query.name);
+        res.redirect("../game/start");
+    }else{
+        if(saveNick.includes()){
+            res.status(200).render("login",{
+                msg : "이미 사용중인 이름입니다.",
+            })
+        }else{
+            saveNick.push(query.name);
+            res.redirect("../game/start");
+        }
+    }
+*/
