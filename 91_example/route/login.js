@@ -13,15 +13,22 @@ let saveNick = [];
 //셋팅
 
 //라우팅
+login.get("/",(req,res,next)=>{
+    // console.log("/ 진입완료");
+    
+    res.redirect("/account/login");
+})
+
 
 login.get("/login",(req,res,next)=>{
-    console.log("login 진입완료")
+    // console.log("login 진입완료")
+    //++ req.baseUrl < /account, req.path < /login , req.originalUrl < /account/login
     res.status(200).render("login",{
         msg : "",
     })
 })
 login.get("/session",(req,res)=>{
-    console.log("session 진입완료")
+    // console.log("session 진입완료")
     let query = req.query??"";
     if(query === ""){
         res.redirect("/account/login");
@@ -33,29 +40,10 @@ login.get("/session",(req,res)=>{
         }else{
             req.session.nick = query.name;
             saveNick.push(query.name);
-            res.redirect("../game/start");
+            res.redirect("/game/start"); //../game/start 안해도된다. 
         }
     }
 })
 
 
 module.exports = login;
-
-/*
-let query = req.query;
-    req.session.nick ?? "" ; 
-    if(!req.session.nick){
-        req.session.nick = query.name;
-        saveNick.push(query.name);
-        res.redirect("../game/start");
-    }else{
-        if(saveNick.includes()){
-            res.status(200).render("login",{
-                msg : "이미 사용중인 이름입니다.",
-            })
-        }else{
-            saveNick.push(query.name);
-            res.redirect("../game/start");
-        }
-    }
-*/

@@ -9,16 +9,17 @@ const game = express.Router();
 
 //라우팅
 game.get("/",(req,res,next)=>{
-    console.log("game 진입완료");
-    res.redirect = "/game/start";
+    // console.log("game 진입완료");
+    res.redirect("/game/start");
 })
 
 game.get("/start",(req,res)=>{
-    console.log("game 진입완료");
+    // console.log("game 진입완료");
     console.log(req.session)
+    // req.session.init = Date.now(); 
     
     if(req.session.nick === undefined){
-        res.redirect("../account/login");
+        res.redirect("/account/login");
     }else{
         res.render("game",{
             currentUserSession : req.session.nick,
