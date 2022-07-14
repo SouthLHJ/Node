@@ -14,17 +14,19 @@ app.use(express.urlencoded({"extended":true}));
 
 //라우팅
 app.get("/",(req,res)=>{
-    res.redirect("/write");
+    res.render("index",{
+
+    })
 })
 
 app.route("/write")
     .get((req,res)=>{
         res.render("write",{
-           
         })
 
     })
     .post((req,res)=>{
+
         let nick = req.body.nick;
         let password = req.body.password;
         let comment = req.body.textarea;
@@ -33,9 +35,10 @@ app.route("/write")
             name : nick,
             password : password,
             comment : comment,
-            log : Date.UTC(),
+            log : Date(Date.now()),
         };
 
+        console.log(save);
         const client = new MongoClient(urm);
         const visitors = client.db("study").collection("visitors");
 

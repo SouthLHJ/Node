@@ -4,21 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List</title>
+    <title>HomePage</title>
 </head>
 <body>
-    <h2>작성된 글</h2>
-    <%list.forEach(data=>{%>
-    <div>
-        <p>● [작성자 이름 : <%=data.name%>] [작성시간 :<%=data.log%> ]</p>
-        <p>작성된 글 : <%=data.comment%> </p>
-    </div>    
-    <%});%>
+    <form action="/list">
+        <button type="submit">목록 페이지</button>
+    </form>
 
-    <div>
     <form action="/write">
         <button type="submit">작성 페이지</button>
     </form>
-    </div>
 </body>
 </html>
