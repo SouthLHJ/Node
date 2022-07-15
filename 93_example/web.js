@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const { MongoClient } = require("mongodb");
+const { MongoClient, MongoDBNamespace } = require("mongodb");
 const urm =  "mongodb+srv://bizpoll:0627204800@cluster0.9dbcz.mongodb.net/?retryWrites=true&w=majority";
 
 app = express();
@@ -21,6 +21,7 @@ app.get("/",(req,res)=>{
 
 app.route("/write")
     .get((req,res)=>{
+        new mongodb.ObjectId(); //이것을 이용해야지 _id를 통해서 얻어낼 수 있다.
         res.render("write",{
         })
 
@@ -46,6 +47,7 @@ app.route("/write")
             console.log(result.acknowledged);
         }).finally(()=>{
             client.close();
+            res.redirect("/list");
         })
     })
 

@@ -9,10 +9,11 @@
 <body>
     <h2>작성된 글</h2>
     <%list.forEach(data=>{%>
-    <div>
-        <p>● [작성자 이름 : <%=data.name%>] [작성시간 :<%=data.log%> ]</p>
+    <div style="background-color: skyblue;">
+        <p>● 작성자 이름 : <%=data.name%> <small>[작성시간 :<%=data.log%> ]</small> <small>[<%=data._id.toString()%>]</small></p>
         <p>작성된 글 : <%=data.comment%> </p>
-    </div>    
+    </div>
+    <hr/>   
     <%});%>
 
     <div>
