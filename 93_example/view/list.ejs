@@ -6,20 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List</title>
 </head>
+<style>
+    .list{
+        margin: 1px;
+        width: 500px;
+        border : solid ;border-color: rgba(4, 94, 94, 0.349); border-radius: 10px;
+        padding: 5px;
+    }
+    .button{
+            margin: 1px;
+            border-radius: 5px; border-color: rgb(12, 63, 63);
+            background-color: rgb(0, 168, 168);
+    }
+</style>
 <body>
-    <h2>작성된 글</h2>
-    <%list.forEach(data=>{%>
-    <div style="background-color: skyblue;">
-        <p>● 작성자 이름 : <%=data.name%> <small>[작성시간 :<%=data.log%> ]</small> <small>[<%=data._id.toString()%>]</small></p>
-        <p>작성된 글 : <%=data.comment%> </p>
+    <h2 style="margin-bottom: 5px ;">작성된 글</h2>
+    <div>
+        <form method="get" action="/">
+            <button type="submit" class="button" style="margin-bottom: 10px ; position: absolute; left: 300px; top: 100px;">홈화면</button>
+        </form>
+        <form method="get" action="/write" style="width: 200px;">
+            <button type="submit" class="button" style="margin-bottom: 10px ; position: relative;">글쓰기</button>
+        </form>
+        
     </div>
-    <hr/>   
+    <%list.forEach(data=>{%>
+    <div class="list">
+        <p>● 작성자 이름 : <%=data.name%> <small>[작성시간 :<%=data.log%> ]</small></p>
+        <p>작성된 글 : <%=data.comment%> </p>
+        <form method="post" action="/list">
+            <input type="hidden" name="delete" value="ok"/>
+            <input type="hidden" name="id" value="<%=data._id.toString()%>" />
+            <button type="submit" class="button">글 삭제</button>
+        </form>
+        <form method="get" action="/update">
+            <input type="hidden" name="id" value="<%=data._id.toString()%>" />
+            <button type="submit" class="button">글 수정</button>
+        </form>
+    </div>
     <%});%>
 
-    <div>
-    <form action="/write">
-        <button type="submit">작성 페이지</button>
-    </form>
-    </div>
+    
 </body>
 </html>

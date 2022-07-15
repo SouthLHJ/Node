@@ -2,7 +2,7 @@ const mongodb = require("mongodb");
 const urm =  "mongodb+srv://bizpoll:0627204800@cluster0.9dbcz.mongodb.net/?retryWrites=true&w=majority"
             //이거는 몽고db 사이트에서 connect 의 두 번째에서 얻어지는 url코드를 집어넣는다.
 //*^*^*^ 몽고DB를 쓸경우 app 말고 route에서 해야지 정상작업이 된다.^*^*^*^
-                                // 그렇지만 그렇게하면 지저분해지니까. 라우팅 내부에 넣어서 깔꼼하게 가능! ->03
+                                // 그렇지만 그렇게하면 지저분해지니까. 라우팅 내부에 넣어서 깔꼼하게 가능! ->93_example/web_collecion.js
 
 //== CREATE
 const client = new mongodb.MongoClient(urm);

@@ -5,14 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage</title>
+    <style>
+        .button{
+            margin: 1px;
+            border-radius: 5px; border-color: rgb(12, 63, 63);
+            background-color: rgb(0, 168, 168);
+        }
+    </style>
 </head>
 <body>
     <form action="/list">
-        <button type="submit">목록 페이지</button>
+        <button type="submit" class="button">목록</button>
     </form>
 
     <form action="/write">
-        <button type="submit">작성 페이지</button>
+        <button type="submit" class="button">글쓰기</button>
     </form>
 </body>
 </html>
