@@ -50,7 +50,9 @@ app.route("/list")
         const list = await guestbook.findAll();
         res.render("list",{list})
     })
-    .post((req,res)=>{
+    .post(async(req,res)=>{
+        
+
         guestbook.deleteById(req.body.id).then(rst=>{
             console.log(rst);
         }).finally(()=>{

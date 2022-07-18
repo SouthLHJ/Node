@@ -32,20 +32,31 @@
     </div>
     <%list.forEach(data=>{%>
     <div class="list">
-        <p>● 작성자 이름 : <%=data.name%> <small>[작성시간 :<%=data.log%> ]</small></p>
+        <p>● 작성자 이름 : <%=data.name%> <small>[작성시간 : <%=data.log%>]</small></p>
         <p>작성된 글 : <%=data.comment%> </p>
-        <form method="post" action="/list">
+        <p><%=msg%></p>
+        <form method="post" action="/list" >
             <input type="hidden" name="delete" value="ok"/>
             <input type="hidden" name="id" value="<%=data._id.toString()%>" />
-            <button type="submit" class="button">글 삭제</button>
+            <button type="submit" class="button" onclick="chkPw()" >글 삭제</button>
         </form>
         <form method="get" action="/update">
             <input type="hidden" name="id" value="<%=data._id.toString()%>" />
-            <button type="submit" class="button">글 수정</button>
+            <button type="submit" class="button" onclick="chkPw()">글 수정</button>
         </form>
     </div>
     <%});%>
+    <script>
+        function pwbox(){
+            let pwinput = document.createElement("input");
+            pwinput.setAttribute("type","text");
+            pwinput.setAttribute("name","inputPw");
+            pwinput.setAttribute("value","");
+            document.querySelector("#list").querySelector("#button").appendChild(pwinput);
+        }
+        function chkPw(){
 
-    
+        }
+    </script>
 </body>
 </html>
