@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        p{
+            font-size: large;
+            color: rgb(18, 105, 18);
+        }
+        h2{
+            color: rgb(18, 105, 18);
+        }
+        button{
+            background-color: rgb(1, 66, 1);
+            color: white;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+    </style>
+
+</head>
+<body>
+    <div style="width : 400px; padding: 20px; padding-bottom: 50px ; position: relative; left: 50px; border: solid; border-color: rgb(1, 66, 1);  border-radius: 1cm;">
+        <h2 style="position: relative;top : 0px">Sign UP</h2>
+        <p style="font-size: large; color: red;"><%=msg%></p>
+        <form method="post" action="/account/signup" onsubmit="return chkPw()">
+            <div>
+                <p>이름</p>
+                <input type="text" name="name" placeholder="이름" style="width: 300px;"/>
+            </div>
+            <div>                
+                <p>아이디</p>
+                <input type="text" name="id" placeholder="아이디" style="width: 300px;"/><p style="font-size: large; color: red;"><%=idmsg%></p>
+            </div>
+            <div>                
+                <p>비밀번호</p>
+                <input id="pw1" type="password" name="pw" placeholder="비밀번호" style="width: 300px;"/>
+                <input id="pw2" type="password"           placeholder="비밀번호확인" style="width: 300px;"/>
+            </div>
+            <div>                
+                <p>이메일</p>
+                <input type="text" name="email" placeholder="이메일" style="width: 300px;"/> <p></p>
+            </div>
+            <div>                
+                <p>전화번호</p>
+                <input type="text" name="contact" placeholder="01012345678" style="width: 300px;"/><p></p>
+            </div>
+            <div>                
+                <p>생년월일</p>
+                <input type="date" name="birth" placeholder="생년월일" style="width: 300px;"/>
+            </div>
+            <button type="submit" style="margin-top: 20px ;">회원가입</button>
+        </form>
+    </div>
+
+    <script>
+        function chkPw(){
+            let pw1 = document.querySelector("#pw1").value;
+            let pw2 = document.querySelector("#pw2").value;
+            if(pw1 !== pw2){
+                alert( 'Confirm Password!' );
+                return false;
+            }else{
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

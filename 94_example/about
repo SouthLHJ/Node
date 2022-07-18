@@ -1,0 +1,23 @@
+
+    이번 주 목표 : 
+     - session을 사용자 인증
+     - multer middle 웨어를 이용한 파일 업로드 구현
+     - fetch를 이용한 비동기 데이터 통신
+
+    /account
+        회원가입 : GET /signup POST /singup  (/account 라우터에서 처리)
+        (id,pw,name,email,contact,birth{year,month,day})
+            > id 중첩확인 : /session
+
+        로그인 인증 : GET /singin POST /signin (/account 라우터에서 처리)
+        {id,pw}     ==> POST 일 때 유효한 사용자일 때는 인증처리
+
+    /user
+        마이페이지 : GET /user (/user 라우터에서 처리)
+        ???
+            /user 라우터는 인증받은 사용자만 올 수 있게 라우터에서 미들웨어 설정.
+
+    +@ DB 작업을 위한 데이터 모듈 작성. (콜렉션 accounts)
+
+
+집가서 할꺼. 로그아웃.
