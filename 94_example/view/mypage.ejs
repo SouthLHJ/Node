@@ -5,14 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mypage</title>
+    <style>
+        p{
+            font-size: large;
+            color: rgb(18, 105, 18);
+        }
+        h2{
+            color: rgb(18, 105, 18);
+        }
+        button{
+            background-color: rgb(1, 66, 1);
+            color: white;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <div>
         <h2 style="background-color: rgb(1, 66, 1); color: white; padding: 10px;">My Page</h2>
     </div>
-    <div style="float: left;">
-
+    <div style="float: left;background-color: rgba(194, 194, 194, 0.397); padding: 10px; ">  
+        <p style="width: 100px; height: 50px; text-align: center;"><%=name%></p>
+        <form method="get" action="/user/exit">
+            <button type="submit" style="width: 100px; height: 30px; border-radius: 10px;" >로그아웃</button>
+        </form>
     </div>
-
+    
 </body>
 </html>

@@ -20,6 +20,11 @@ router.get("/mypage",(req,res)=>{
     })
 })
 
+router.get("/exit",(req,res)=>{
+    req.session.destroy(); // session에 있는 저장된 내용 모두 삭제.
+    res.redirect("/account/signin");
+})
+
 
 
 

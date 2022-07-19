@@ -92,7 +92,7 @@ router.route("/signin")
             console.log(elm);
             //id체크
             if(elm == undefined){ // 찾아봤는데 elm이 없을경우.
-                res.render("signin",{
+                res.status(401).render("signin",{
                     msg : "사용하고 있지않은 아이디입니다.",
                 })
             }else{
@@ -103,7 +103,7 @@ router.route("/signin")
                     req.session.name = elm.name;
                     res.redirect("/user/mypage");
                 }else{
-                    res.render("signin",{
+                    res.status(401).render("signin",{
                         msg : "잘못된 비밀번호입니다.",
                     })
                 }
