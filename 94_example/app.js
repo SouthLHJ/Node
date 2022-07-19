@@ -34,6 +34,9 @@ app.use("/user",(req,res,next)=>{
 })
 
 //라우터
+app.get("/",(req,res)=>{
+    res.render("index")
+})
 
 
 app.listen(8080);
