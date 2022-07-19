@@ -25,11 +25,18 @@
     <div>
         <h2 style="background-color: rgb(1, 66, 1); color: white; padding: 10px;">My Page</h2>
     </div>
-    <div style="float: left;background-color: rgba(194, 194, 194, 0.397); padding: 10px; ">  
-        <p style="width: 100px; height: 50px; text-align: center;"><%=name%></p>
-        <form method="get" action="/user/exit">
-            <button type="submit" style="width: 100px; height: 30px; border-radius: 10px;" >로그아웃</button>
+    <div id="profile" style="float: left;background-color: rgba(194, 194, 194, 0.397); padding: 10px; ">
+        <img name="ig" src=<%=user.image?? "/user/static/default.jpg"%> width="150" height="150" id="image">
+        <form  action="/user/profile" method="get">
+            <button type="submit">사진 변경</button>
         </form>
+        <p style="text-align: center;"><%=user.email%></p>
+        <div>
+            <form method="get" action="/user/exit">
+                <button type="submit" style="width: 80px; height: 25px; position:absolute; left: 50%;" >로그아웃</button>
+            </form>
+        </div>
+
     </div>
     
 </body>

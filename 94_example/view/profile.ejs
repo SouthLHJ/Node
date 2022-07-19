@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p{
+            font-size: large;
+            color: rgb(18, 105, 18);
+        }
+        h2{
+            color: rgb(18, 105, 18);
+        }
+        button{
+            background-color: rgb(1, 66, 1);
+            color: white;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <p><%=user.name%>님 프로필 사진 변경</p>
+    <div>
+        <img src=<%=user.image?? "/user/static/default.jpg"%> width="150" height="150" id="image">
+            <form action="/user/profile" method="post" enctype="multipart/form-data">
+                <input type="file" name="profile" accept="image/*" onchange="preview(event);"/>
+                                <!-- input 에다가 multiple를 기능을 넣으면 다중 선택이 가능하게된다.-->
+                <button type="submit">적용</button>
+            </form>
+    </div> 
+    <div style="margin-top: 20px ;">
+        <form method="get" action="/user/mypage">
+            <button type="submit" style="padding: 5px;">페이지벗어나기</button>
+        </form>
+    </div>
+
+    <script>
+        //사진 미리보기기능. (적용은 눌러야 됨.)
+        function preview(evt){
+            if(evt.target.files && evt.target.files[0]){ //현재는 single이므로 [0]의 이미지를 사용하면딘다.
+                console.log(evt.target.files[0]);
+                let reader = new FileReader();  //브라우저에서만 돌아가는 호스트이다. browser host 객체
+                reader.readAsDataURL(evt.target.files[0]); //요래하면 이벤트로 발생한 파일 [0]번째꺼를 브라우저가 읽어준다.
+                reader.onload = function(rst){   //읽는 작업이 끝나면 function 실행(콜백개념). 
+                    console.log(rst.target.result);
+                    document.querySelector("#image").src = rst.target.result;
+            
+                }
+            }
+        }
+    </script>
+</body>
+</html>

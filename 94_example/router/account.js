@@ -100,7 +100,7 @@ router.route("/signin")
                 let rstpw = elm.pw == req.body.pw;
                 if(rstpw){
                     req.session.loggedIn = true;
-                    req.session.name = elm.name;
+                    req.session.userid = elm.id;
                     res.redirect("/user/mypage");
                 }else{
                     res.status(401).render("signin",{
