@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profile</title>
     <style>
         p{
             font-size: large;
@@ -22,19 +22,58 @@
     </style>
 </head>
 <body>
-    <p><%=user.name%>님 프로필 사진 변경</p>
-    <div>
-        <img src=<%=user.image?? "/user/static/default.jpg"%> width="150" height="150" id="image">
-            <form action="/user/profile" method="post" enctype="multipart/form-data">
-                <input type="file" name="profile" accept="image/*" onchange="preview(event);"/>
-                                <!-- input 에다가 multiple를 기능을 넣으면 다중 선택이 가능하게된다.-->
-                <button type="submit">적용</button>
-            </form>
-    </div> 
+    <p> <b><%=user.name%></b>님 회원 정보</p>
     <div style="margin-top: 20px ;">
         <form method="get" action="/user/mypage">
-            <button type="submit" style="padding: 5px;">페이지벗어나기</button>
+            <button type="submit" style="padding: 5px; margin-bottom: 10px;">수정 취소</button>
         </form>
+    </div>
+    <div style="width : 400px; padding: 20px; padding-bottom: 50px ; position: relative; left: 1px; border: solid; border-color: rgb(1, 66, 1);  border-radius: 1cm;">
+        
+        <img src=<%=user.image?? "/user/static/default.jpg"%> width="150" height="150" id="image">
+        <form action="/user/profile" method="post" enctype="multipart/form-data" onsubmit="return chkPw()">
+            <div>
+                <p>프로필 사진 변경</p>
+                <input type="file" name="profile" accept="image/*" onchange="preview(event);"/>
+                                <!-- input 에다가 multiple를 기능을 넣으면 다중 선택이 가능하게된다.-->
+            </div>
+
+            <div>
+                <p>이름</p>
+                <input type="text" name="name" value="<%=user.name%>" style="width: 300px;"/>
+            </div>
+
+            <div>                
+                <p>아이디</p>
+                <input type="text" name="id" value="<%=user.id%>" style="width: 300px;"/><p style="font-size: large; color: red;"></p>
+            </div>
+
+            <div>                
+                <p>비밀번호</p>
+                <input id="pw1" type="password" name="pw" value="<%=user.pw%>" style="width: 300px;"/>
+                <input id="pw2" type="password"           placeholder="비밀번호확인" style="width: 300px;"/>
+            </div>
+
+            <div>                
+                <p>이메일</p>
+                <input type="text" name="email" value="<%=user.email%>" style="width: 300px;"/> <p></p>
+            </div>
+
+            <div>                
+                <p>전화번호</p>
+                <input type="text" name="contact" value="<%=user.contact%>" style="width: 300px;"/><p></p>
+            </div>
+
+            <div>                
+                <p>생년월일</p>
+                <input type="date" name="birth" value="<%=user.birth%>" style="width: 300px;"/>
+            </div>
+
+            <button type="submit">적용</button>
+        </form>
+    </div> 
+    <div>
+
     </div>
 
     <script>
@@ -49,6 +88,17 @@
                     document.querySelector("#image").src = rst.target.result;
             
                 }
+            }
+        }
+        //비번 동일 확인 기능
+        function chkPw(){
+            let pw1 = document.querySelector("#pw1").value;
+            let pw2 = document.querySelector("#pw2").value;
+            if(pw1 !== pw2){
+                alert( 'Confirm Password!' );
+                return false;
+            }else{
+                return true;
             }
         }
     </script>

@@ -17,7 +17,6 @@ router.route("/signup")
         })
     })
     .post((req,res)=>{
-        console.log("post signup")
         accounts.findAll().then(array=>{
             let rst = array.some((elm)=>{ //id값이 하나라도 겹치는게 있는지 확인
                 elm.id == req.body.id;
@@ -32,14 +31,12 @@ router.route("/signup")
 
         let submitchk = (req.body.id !== undefined && req.body.pw !== undefined && req.body.name !== undefined
                      && req.body.email !== undefined && req.body.contact !== undefined&& req.body.birth !== undefined);
-        console.log(submitchk);
         if(!submitchk){
             res.render("signup",{
                 msg : "모두 작성해주시길 바랍니다.",
                 idmsg : undefined
             })
         }else{
-            console.log("save")
             let save = {
                 id : req.body.id,
                 pw : req.body.pw,
@@ -86,10 +83,7 @@ router.route("/signin")
         })
     })
     .post((req,res)=>{
-        console.log("post")
-        console.log(req.body.id)
         accounts.findById(req.body.id).then(elm=>{
-            console.log(elm);
             //id체크
             if(elm == undefined){ // 찾아봤는데 elm이 없을경우.
                 res.status(401).render("signin",{

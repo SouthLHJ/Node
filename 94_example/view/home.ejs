@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+    <style>
+        p{
+            font-size: large;
+            color: rgb(18, 105, 18);
+        }
+        h2{
+            background-color: rgb(1, 66, 1);
+            color: white;
+            padding: 10px;
+        }
+        button{
+            background-color: rgb(1, 66, 1);
+            color: white;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+        textarea{
+            width: 330px;
+            border : solid;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+        a{
+            font-size: 3px;
+            color: rgb(18, 105, 18);
+        }
+        .article{
+            width: 500px;
+            padding: 10px;
+            margin-top: 10px;
+            border : solid;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+        .post{
+            width: 500px;
+            padding: 10px;
+            margin-top: 10px;
+            border : solid;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>POSTING</h2>
+        <form method="get" action="/user/mypage">
+            <button type="submit">My Page</button>
+        </form>
+    </div>
+    <!--글쓰기-->                                                
+    <div class="post">  
+        <form method="post" action="/article/upload" enctype="multipart/form-data">
+            <div>
+                <input type="radio" name="public" id="public" value="public" checked/>
+                <label for="public">공개</label>
+                <input type="radio" name="public" id="private" value="private"/>
+                <label for="private">비공개</label>
+            </div>
+            <div>
+                <textarea name="post"></textarea>
+            </div>
+            <div>
+                <%for(let i =0; i<=5 ; i++ ){%>
+                    <img src="" width="50" height="50"  id="image<%=i%>" style="display : none"/> 
+                <%}%>
+                <input type="file" name="attaches" accept="image/*" onchange="preview(event);" multiple/>
+            </div>
+
+            <button type="submit">POST</button>
+        </form>
+    </div>
+
+    <!--게시글 보여주기-->
+    <%if(post){%>
+        <%post.forEach(article=>{%>
+            <%if(article.public === "public") {%>
+                
+                    <div class="article">
+                        <div id="inline">
+                            <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
+                            <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
+                            <a href="/article/view" style="display: inline;">상세보기</a>
+                        </div>
+
+                        <div>
+                            <p><%=article.post%></p>
+                        </div>
+
+                        <%if(article.attaches){%>
+                            <% article.attaches.forEach(elm =>{%>
+                                <div >
+                                    <img src=<%=elm%> width="200" height="200" >
+                                </div>
+                            <%})%>
+                        <%}%>
+
+                        <div>
+                            <p style="display: inline;">🗨 <%=article.comments.length%></p>
+                            <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+                        </div>
+                    </div>
+                
+            <%}%>
+        <%})%>
+    <%}%>
+    <script>
+        //사진 미리보기기능. (적용은 눌러야 됨.)
+        function preview(evt){
+            let file = Array.from(evt.target.files); //이 files가 유사배열이라서 배열로 바꿔주는 과정이 필요함
+            if(file){ //
+                file.forEach((elm,idx) => {
+                    let reader = new FileReader();  //브라우저에서만 돌아가는 호스트이다. browser host 객체
+                    reader.readAsDataURL(elm); //요래하면 이벤트로 발생한 파일 [0]번째꺼를 브라우저가 읽어준다.
+                    reader.onload = function(rst){   //읽는 작업이 끝나면 function 실행(콜백개념). 
+                        document.querySelector(`#image${idx}`).src = rst.target.result;
+                        document.querySelector(`#image${idx}`).style.display = "";
+                    }
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>

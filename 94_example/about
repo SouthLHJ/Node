@@ -27,3 +27,37 @@
 
         프로필 이미지 변경 / (업로드를 이용해서)
             - 사용자 정보를 담고 있는 문서에 update : $set profile = 
+
+0720
+    (트위터 참고)
+    상단에는 글쓰는 공간.
+    아래에는 최신 데이터들 나열.
+     콜렉션 articles를 사용하자.
+     문서 형태는 {"writerName" : user.name , "writerId" : user.id , "writerImage" : user.image ,
+                  "post" : textarea(/home 에서 작성한거), "createdAt" : Date.now() , 
+                  "attaches" : multer.array (req.files~~~), "comments" : [] }
+            만약 멀티플 업로드를 했다면 attaches 배열이다.
+
+
+    /article
+        GET /home
+        1 위에는 글쓰기 폼, 아래 쪽에는 최신 목록 함께 출력
+        2 목록 출력을 해줄 때에는 comments.length를 출력하여 댓글들 갯수 보여지게.
+        3 개별 article마다 <a href = "/article/view?articledId<%=elm._id.toString()"%>을 하게해서 그 문서 상세보기 페이지를 만들꺼다.
+
+         - 글쓰기 폼 요구사항.
+            : 공개 비공개 (input type = "radio") or (input type ="checkbox")
+              아래 쪽 글을 쓸 수 있는 공간이 있어야한다. (textarea)
+              이미지를 다중 첨부할 수 있어야한다. (input type = "file" multiple)
+               +업로드 전에 미리보기 구현해봐도 좋을듯..... files 배열이라서 생각 좀 해봐... (구현을 해놨느데 좀 수정해야함.)
+                                                    multer.array
+            : 사용한 name -> 1. public   2. comment  3. attaches
+            render -> post(게시글출력용)
+
+        POST /upload
+        업로드 처리할 것 하고  redirect("/article/home")
+                 
+        GET  /view
+        query로 넘어온 article의 ID값에 해당하는 문서 상세보기를 만들면 된다.
+        거기에서 댓글을 달게 만들예정.
+                

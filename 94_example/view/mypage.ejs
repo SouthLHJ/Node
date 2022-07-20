@@ -19,24 +19,81 @@
             border-color: rgb(1, 66, 1) ;
             border-radius: 5px;
         }
+        .article{
+            width: 500px;
+            padding: 10px;
+            margin-top: 10px;
+            border : solid;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+        #profile{
+            width: 200px;
+            background-color: rgba(194, 194, 194, 0.397);
+            padding: 10px;
+
+        }
     </style>
 </head>
 <body>
     <div>
         <h2 style="background-color: rgb(1, 66, 1); color: white; padding: 10px;">My Page</h2>
     </div>
-    <div id="profile" style="float: left;background-color: rgba(194, 194, 194, 0.397); padding: 10px; ">
-        <img name="ig" src=<%=user.image?? "/user/static/default.jpg"%> width="150" height="150" id="image">
-        <form  action="/user/profile" method="get">
-            <button type="submit">사진 변경</button>
-        </form>
-        <p style="text-align: center;"><%=user.email%></p>
-        <div>
-            <form method="get" action="/user/exit">
-                <button type="submit" style="width: 80px; height: 25px; position:absolute; left: 50%;" >로그아웃</button>
+    <div id="profile">
+        <div style="text-align: center;">
+            <img name="ig" src=<%=user.image?? "/user/static/default.jpg"%> width="150" height="150" id="image">
+            <form  action="/user/profile" method="get">
+                <button type="submit">회원 정보 변경</button>
             </form>
         </div>
+        <p style="text-align: center;"><%=user.email%></p>
+        <div>
+            <form method="get" action="/user/exit" style="text-align: center;">
+                <button type="submit" style="width: 80px; height: 25px;" >로그아웃</button>
+            </form>
+        </div>
+    </div>
 
+    <div style="margin-top: 10px ;">
+        <form method="get" action="/article/home">
+            <button type="submit">최신 게시글</button>
+        </form>
+    </div>
+    <div>
+        <p style="background-color:rgba(0, 61, 0, 0.377); padding: 1px;"><b>내가 쓴 게시글</b></p>
+        <%if(post){%>
+            <%post.forEach(article=>{%>
+                <div class="article">
+                    <div id="inline">
+                        <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="20" height="20" style="display: inline;">
+                        <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
+                    </div>
+
+                    <div>
+                        <p><%=article.post%></p>
+                    </div>
+
+                    <%if(article.attaches){%>
+                        <% article.attaches.forEach(elm =>{%>
+                            <div >
+                                <img src=<%=elm%> width="200" height="200" >
+                            </div>
+                        <%})%>
+                    <%}%>
+
+                    <div>
+                        <p style="display: inline;">🗨 <%=article.comments.length%></p>
+                        <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+                    </div>
+                </div>
+
+                <form method="post" action="/user/articleDelete">
+                    <input type="hidden" name="artUniqeId" value="<%=article._id%>"/>
+                    <button type="submit">게시글 삭제</button>
+                </form>
+
+            <%})%>
+        <%}%>
     </div>
     
 </body>

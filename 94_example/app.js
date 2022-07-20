@@ -6,6 +6,7 @@ const session = require("express-session");
 
 const accountRouter = require("./router/account");
 const userRouter = require("./router/user");
+const articleRouter = require("./router/article");
 const app = express();
 
 //셋팅
@@ -24,6 +25,7 @@ app.use(session({
 app.use(express.urlencoded({"extended":true}));
 app.use("/account",accountRouter);
 app.use("/user",userRouter);
+app.use("/article",articleRouter);
 
 
 app.use("/user",(req,res,next)=>{
