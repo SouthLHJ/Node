@@ -22,7 +22,7 @@
             border-radius: 5px;
         }
         textarea{
-            width: 330px;
+            width: 490px;
             border : solid;
             border-color: rgb(1, 66, 1) ;
             border-radius: 5px;
@@ -83,32 +83,30 @@
     <%if(post){%>
         <%post.forEach(article=>{%>
             <%if(article.public === "public") {%>
-                
-                    <div class="article">
-                        <div id="inline">
-                            <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
-                            <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
-                            <a href="/article/view" style="display: inline;">상세보기</a>
-                        </div>
-
-                        <div>
-                            <p><%=article.post%></p>
-                        </div>
-
-                        <%if(article.attaches){%>
-                            <% article.attaches.forEach(elm =>{%>
-                                <div >
-                                    <img src=<%=elm%> width="200" height="200" >
-                                </div>
-                            <%})%>
-                        <%}%>
-
-                        <div>
-                            <p style="display: inline;">🗨 <%=article.comments.length%></p>
-                            <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
-                        </div>
+                <div class="article">
+                    <div id="inline">
+                        <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
+                        <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
+                        <a href="/article/view?unique=<%=article._id%>&id=<%=article.writerId%>" style="display: inline;">상세보기</a>
                     </div>
-                
+
+                    <div>
+                        <p><%=article.post%></p>
+                    </div>
+
+                    <%if(article.attaches){%>
+                        <% article.attaches.forEach(elm =>{%>
+                            <div >
+                                <img src=<%=elm%> width="200" height="200" >
+                            </div>
+                        <%})%>
+                    <%}%>
+
+                    <div>
+                        <p style="display: inline;">🗨 <%=article.comments.length%></p>
+                        <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+                    </div>
+                </div>
             <%}%>
         <%})%>
     <%}%>

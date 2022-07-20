@@ -82,8 +82,12 @@ router.post("/upload",profileUpload.array("attaches"),(req,res)=>{
     })
 })
 
-router.get("/view",(req,res)=>{
-
+router.get("/view",async(req,res)=>{
+    let post = await accounts.findByIdArticle(req.query.id,req.query.unique);
+    console.log(post)
+    res.render("view",{
+        post : post,
+    })
 })
 
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail View</title>
+</head>
+<style>
+    p{
+        font-size: large;
+        color: rgb(18, 105, 18);
+    }
+    h2{
+        background-color: rgb(1, 66, 1);
+        color: white;
+        padding: 10px;
+    }
+    button{
+        background-color: rgb(1, 66, 1);
+        color: white;
+        border-color: rgb(1, 66, 1) ;
+        border-radius: 5px;
+    }
+    textarea{
+        width: 490px;
+        border : solid;
+        border-color: rgb(1, 66, 1) ;
+        border-radius: 5px;
+    }
+    a{
+        font-size: 3px;
+        color: rgb(18, 105, 18);
+    }
+    .article{
+        width: 500px;
+        padding: 10px;
+        margin-top: 10px;
+        border : solid;
+        border-color: rgb(1, 66, 1) ;
+        border-radius: 5px;
+    }
+    .post{
+        width: 500px;
+        padding: 10px;
+        margin-top: 10px;
+        border : solid;
+        border-color: rgb(1, 66, 1) ;
+        border-radius: 5px;
+    }
+</style>
+<body>
+    <!--상세보기 본문-->
+    <%if(post){%>
+        <%post.forEach(article=>{%>
+            <%if(article.public === "public") {%>
+                <div class="article">
+                    <div id="inline">
+                        <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
+                        <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
+                    </div>
+
+                    <div>
+                        <p><%=article.post%></p>
+                    </div>
+
+                    <%if(article.attaches){%>
+                        <% article.attaches.forEach(elm =>{%>
+                            <div >
+                                <img src=<%=elm%> width="200" height="200" >
+                            </div>
+                        <%})%>
+                    <%}%>
+
+                    <div>
+                        <p style="display: inline;">🗨 <%=article.comments.length%></p>
+                        <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+                    </div>
+                </div>
+            <%}%>
+        <%})%>
+    <%}%>
+</body>
+</html>
