@@ -57,7 +57,21 @@
         POST /upload
         업로드 처리할 것 하고  redirect("/article/home")
                  
-        GET  /view
+        GET  /detail
         query로 넘어온 article의 ID값에 해당하는 문서 상세보기를 만들면 된다.
         거기에서 댓글을 달게 만들예정.
-                
+
+
+0721
+    데이터를 화면에 뿌려줄 때, 필터링이 필요함.
+    .public === "public" 이거나 혹은 writerId == req.session.user.id(=나는 user.id로 되있음)
+    이라는 조건을 통해 전체 게시글 중에 로그인계정이 작성한 글은 무조건 보여지게 한다. (비공개라는거 알려주기!)
+
+(수정)/account
+        /singup
+            이미 사용 중인 아이디입니다를 AJAX를 이용해서 나타내게 하자.
+
+    /article
+        /detail
+            상세보기에서 덧글 다는걸 AJAX로 표현하게 하자.
+    

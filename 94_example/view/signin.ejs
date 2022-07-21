@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100% ;">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign IN</title>
     <style>
+        body{
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -50px;
+        }
         p{
             font-size: large;
             color: rgb(18, 105, 18);
         }
         h2{
+            padding: 1px;
             color: rgb(18, 105, 18);
+            background-color: rgb(197, 233, 197);
         }
         button{
-            display: block;
+            width: 80px;
             background-color: rgb(1, 66, 1);
             color: white;
             border-color: rgb(1, 66, 1) ;
@@ -23,16 +32,16 @@
     </style>
 </head>
 <body>
-    <div style="position: relative; left : 500px; width: 500px;">
-        <h2 style="font-size: large;">Sign IN</h2>
-        <form method="post" action="/account/signin">
-            <input type="text" name="id" placeholder="아이디" style="position: absolute; left: 10px; top : 40px; width: 350px;"/><br>
-            <input type="password" name="pw" placeholder="비밀번호" style="position: absolute; left: 10px; top : 70px; width: 350px;"/><br>
+    <div style="width: 400px; border : solid; border-color: rgb(1, 66, 1); text-align: center;">
+        <h2 style="font-size: large;">로그인</h2>
+        <form method="post" action="/account/signin" >
+            <input type="text" name="id" placeholder="아이디" style="width: 350px;"/><br>
+            <input type="password" name="pw" placeholder="비밀번호" style="width: 350px;"/><br>
             <p><%=msg%></p>
-            <button type="submit">로그인</button>
+            <button type="submit" style="margin-bottom: 5px;">로그인</button>
         </form>
         <form method="get" action="/account/signup">
-            <button type="submit" style="margin-top: 5px;">회원가입</button>
+            <button type="submit" style="margin-bottom: 5px;">회원가입</button>
         </form>
     </div>
     

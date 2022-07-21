@@ -53,31 +53,29 @@
     <!--상세보기 본문-->
     <%if(post){%>
         <%post.forEach(article=>{%>
-            <%if(article.public === "public") {%>
-                <div class="article">
-                    <div id="inline">
-                        <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
-                        <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
-                    </div>
-
-                    <div>
-                        <p><%=article.post%></p>
-                    </div>
-
-                    <%if(article.attaches){%>
-                        <% article.attaches.forEach(elm =>{%>
-                            <div >
-                                <img src=<%=elm%> width="200" height="200" >
-                            </div>
-                        <%})%>
-                    <%}%>
-
-                    <div>
-                        <p style="display: inline;">🗨 <%=article.comments.length%></p>
-                        <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
-                    </div>
+            <div class="article">
+                <div id="inline">
+                    <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
+                    <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
                 </div>
-            <%}%>
+
+                <div>
+                    <p><%=article.post%></p>
+                </div>
+
+                <%if(article.attaches){%>
+                    <% article.attaches.forEach(elm =>{%>
+                        <div >
+                            <img src=<%=elm%> width="200" height="200" >
+                        </div>
+                    <%})%>
+                <%}%>
+
+                <div>
+                    <p style="display: inline;">🗨 <%=article.comments.length%></p>
+                    <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+                </div>
+            </div>
         <%})%>
     <%}%>
 </body>

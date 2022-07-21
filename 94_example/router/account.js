@@ -3,8 +3,11 @@ const express = require("express");
 const router = express.Router();
 
 const accounts = require("../collection/accounts");
+const apiRouter = require("../router/api");
+
 //미들웨어
 router.use(express.urlencoded({"extended":true}));
+router.use("/api",apiRouter);
 
 //라우팅
     //변수
@@ -13,28 +16,14 @@ router.route("/signup")
     .get((req,res)=>{
         res.render("signup",{
             msg : "",
-            idmsg : "",
         })
     })
     .post((req,res)=>{
-        accounts.findAll().then(array=>{
-            let rst = array.some((elm)=>{ //id값이 하나라도 겹치는게 있는지 확인
-                elm.id == req.body.id;
-            });
-            if(rst){ //true => 겹침.
-                res.render("signup",{
-                    msg : "",
-                    idmsg : "이미 사용 중인 아이디입니다."
-                })
-            }
-        });
-
-        let submitchk = (req.body.id !== undefined && req.body.pw !== undefined && req.body.name !== undefined
-                     && req.body.email !== undefined && req.body.contact !== undefined&& req.body.birth !== undefined);
-        if(!submitchk){
+        let submitchk = req.body.id && req.body.pw && req.body.name
+                     && req.body.email&& req.body.contact&& req.body.birth;
+        if(!submitchk || req.body.idchkRst == false){
             res.render("signup",{
-                msg : "모두 작성해주시길 바랍니다.",
-                idmsg : undefined
+                msg : "중복 아이디 확인 또는 전체 작성 해주시길 바랍니다.",
             })
         }else{
             let save = {

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post fetch</title>
+</head>
+<body>
+    <form action="/api/post"method="post" enctype="application/x-www-form-urlencoded">
+        <input type="checkbox" name="type" value="private">
+        <button type="submit">섭밋</button>
+    </form>
+
+    <button id="b1">post Test</button>
+    <button id="b2">post Test2</button>
+
+
+    <script>
+        //POST방식 application/json형식
+        document.querySelector("#b2").onclick = (evt)=>{
+            //AJAX post 요청할 때 전송데이터를 "application/x-www-form-urlencoded" 보다는
+            //application/json 타입으로 전송한다.
+            const data = {
+                comment : "안녕하세요_반갑습니다",
+                score : 3,
+            }
+
+            fetch("/api/post",
+                {
+                    method:"post", //("put" or "delete")가능
+                    body:JSON.stringify(data),
+                    headers:{
+                        "Content-type" : "application/json"
+                    }
+                })
+            .then((res)=>{
+                res.json();
+            })
+            .then((rst)=>{
+                console.log(rst)
+            })
+        }
+
+
+
+
+        //POST방식 application/x-www-form-urlencoded형식으로 백앤드 app으로 값 보내는 방법
+        document.querySelector("#b1").onclick = (evt)=>{
+            let data = "comment=반갑습니다&visitor=루피";
+            fetch("/api/post",
+                {
+                    method : "post",
+                    body : data, 
+                    headers : {
+                        "Content-type" : "application/x-www-form-urlencoded"
+                    }
+                })
+            //post 값 보내는걸 body에 들어간 query형식의 string으로 보낸다. Request Header의 값도 설정(url로 parse해준다.)해줘야함!
+                                                                   // 기본으로는 text/plane? 이라고 설정되있다.
+                               
+                .then((res)=>{
+                    return res.json();
+                })
+                .then((rst)=>{
+                    console.log(rst);
+                })
+        };
+
+    </script>
+    
+</body>
+</html>

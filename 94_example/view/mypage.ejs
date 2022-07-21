@@ -60,13 +60,16 @@
         </form>
     </div>
     <div>
-        <p style="background-color:rgba(0, 61, 0, 0.377); padding: 1px;"><b>내가 쓴 게시글</b></p>
+        <p style="background-color: rgb(197, 233, 197); padding: 1px;"><b>내가 쓴 게시글</b></p>
         <%if(post){%>
             <%post.forEach(article=>{%>
                 <div class="article">
                     <div id="inline">
-                        <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="20" height="20" style="display: inline;">
-                        <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
+                        <span><img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline; border-radius : 70%"></span> 
+                        <span style = "color: rgb(18, 105, 18);"><b><%=article.writerId%></b></span> <span style="font-size: 2px; color: gray;">@<%=article.writerName%> </span>
+                        <%if(article.public == "private"){ %>
+                            <p style="font-size: 5px; color: red; display: inline;"><b>⛔ 비공개</b></p>
+                        <%}%>
                     </div>
 
                     <div>

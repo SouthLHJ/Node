@@ -30,6 +30,10 @@ router.use(async(req,res,next)=>{
     // /home
 router.get("/home",async(req,res)=>{
     let post = await accounts.findAllArticle();
+    post = post.filter((elm)=>{
+        //애초에 ejs로 넘길 때 공개글과 내 글만 보내게 만든다!!
+        return (elm.public == "public" || elm.writerId == user.id);
+    })
     res.render("home",{
         post : post
     })
@@ -82,10 +86,9 @@ router.post("/upload",profileUpload.array("attaches"),(req,res)=>{
     })
 })
 
-router.get("/view",async(req,res)=>{
+router.get("/detail",async(req,res)=>{
     let post = await accounts.findByIdArticle(req.query.id,req.query.unique);
-    console.log(post)
-    res.render("view",{
+    res.render("detail",{
         post : post,
     })
 })

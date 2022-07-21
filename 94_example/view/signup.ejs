@@ -25,7 +25,7 @@
 <body>
     <div style="width : 400px; padding: 20px; padding-bottom: 50px ; position: relative; left: 50px; border: solid; border-color: rgb(1, 66, 1);  border-radius: 1cm;">
         <h2 style="position: relative;top : 0px">Sign UP</h2>
-        <p style="font-size: large; color: red;"><%=msg%></p>
+        <p style=" color: red;"><%=msg%></p>
         <form method="post" action="/account/signup" onsubmit="return chkPw()">
             <div>
                 <p>이름</p>
@@ -33,7 +33,8 @@
             </div>
             <div>                
                 <p>아이디</p>
-                <input type="text" name="id" placeholder="아이디" style="width: 300px;"/><p style="font-size: large; color: red;"><%=idmsg%></p>
+                <input id="id" type="text" name="id" placeholder="아이디" style="width: 300px;"/>
+                <p id="idchk"></p><input type="hidden" id="idchkRst" name="idchkRSt"/>
             </div>
             <div>                
                 <p>비밀번호</p>
@@ -66,6 +67,18 @@
             }else{
                 return true;
             }
+        }
+
+        document.querySelector("#id").onchange = (evt)=>{
+            fetch(`/account/api/idcheck?id=${evt.target.value}`, {method : "get"})
+                .then((res)=>{
+                    return res.json();
+                })
+                .then((rst)=>{
+                    document.querySelector("#idchk").style = "color : red; font-size : 12px;"
+                    document.querySelector("#idchk").textContent = rst.msg;
+                    document.querySelector("#idchkRst").value = rst.success;
+                })
         }
     </script>
 </body>

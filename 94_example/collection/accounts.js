@@ -42,7 +42,7 @@ async function deleteById(id){
 async function updateById(val,obj){
     const accounts = accountConnect();
 
-    let result = await guestbook.updateOne({id : val},{$set  : {
+    let result = await accounts.updateOne({id : val},{$set  : {
         "id" : obj.id,
         "pw" : obj.pw,
         "email" : obj.email,
@@ -92,6 +92,8 @@ async function deleteByIdArticle(valUniqeid){
 
 //객체를 exports한다.
 module.exports = {
+    //account
     insertOne,     findAll,        findById,         deleteById,        updateById, updateUserImage ,
+    //article
     insertArticle , findAllArticle, findByIdArticle, deleteByIdArticle
 };

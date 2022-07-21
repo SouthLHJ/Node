@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax_send</title>
+</head>
+<body>
+    <div id="divTxt">
+        <h2>AJAX 요청을 보낼 때 테이터를 같이 보내고자 한다면?</h2>
+        <input type="text" id="txt" onchange="test(event);" />
+        <div></div>
+
+    </div>
+    <hr/>
+    <div>
+        <h2>AddReq</h2>
+        <input type="number" id="one" onkeyup="sendAddReq(event);" width="30" />
+        <input type="number" id="other" onkeyup="sendAddReq(event);" width="30" />
+        <p id="addReq"></p>
+        
+    </div>
+
+    <script>
+        function test(evt){
+            let value = evt.target.value;
+            fetch(`/api/check?value=${value}`,{method : "get"})
+                .then((res)=>{
+                    return res.json();
+                })
+                .then((result)=>{
+                    // result로 app 응답이 {"success" : true/false}이 온다고 가정.
+                    if(result.success){
+                        // let cmtElm = document.createElement("p");
+                        // cmtElm.textContent = "오케이 통과아아!!"
+                        // document.querySelector("#divTxt").appendChild(cmtElm);
+                        evt.target.nextElementSibling.innerHTML = "<b>오케이 통과!</b>";
+                    }else{
+                        evt.target.nextElementSibling.innerHTML = "<i>문제있음!</i>";
+                    }
+                })
+        }
+
+        function sendAddReq(evt){
+            let one = document.querySelector("#one").value;
+            let other = document.querySelector("#other").value;
+            if(one && other){
+                fetch(`/api/add?one=${one}&other=${other}`,{method : "get"})
+                    .then((res)=>{
+                        return res.json();
+                    })
+                    .then((result)=>{
+                        console.log(result);
+                        document.querySelector("#addReq").textContent = result.answer;
+                    })
+            }
+        }
+    </script>
+</body>
+</html>

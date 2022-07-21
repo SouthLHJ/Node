@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX</title>
+</head>
+<body>
+    <h1>AJAX</h1>
+    <p>
+        AJAX는 Asynchronous JavaScript and XML의 약자로,
+        말 그대로 JavaScript와 XML을 이용한 비동기적 정보 교환 기법(데이터 통신)이다.
+    </p>
+    <button id="bt">클릭!</button>
+    <button id="bt2">클릭2!</button>
+    <button id="bt3">클릭3!</button>
+
+    <script>
+
+        //========= fetch 방법하고 json 사용
+        document.querySelector("#bt3").onclick = function(evt){
+            fetch("/api/dest",{method : "post"})
+                .then((res)=>{  //이 res는 app. 에서 처리된 결과값(res.~~)이 들어온다.
+                    // console.log(res.text());
+                    //text()로 받아버리면 string 그대로 받아와져서 추가 작업 parse(res.text())를 해야하는데
+                    //res.json()으로 받아오면 추가처리없이 app에서 전달받은 문자열화된 객체obj를 다시 객체로 전환해서
+                    return res.json();
+                    //다음 .then()으로 넘겨준다.
+                })
+                .then((obj)=>{
+                    //그래서 들어와진 obj는 객체형이다.
+                    console.log(obj, typeof obj);
+                })
+        }
+
+
+
+        //========= fetch 사용방법
+        document.querySelector("#bt2").onclick = function(evt){
+            //fetch는 비동기 함수이다.
+            fetch("/api/dest",{method : "get"}) // ( url, { 방법 : " " } )
+                            // ["get"]:query형식, [ "post", "put", "delete"]:body형식 
+                .then((res)=>{
+                    console.log("res",res);
+                    return res.text();
+                    //이 res.text() 도 비동기처리이고, return으로 그 다음 then의 rst로 들어가진다.
+                })
+                .then((rst)=>{
+                    console.log(rst)
+                })
+                .catch(err =>{
+                    console.log("err",err);
+                })
+        }
+
+
+        //========== 정통적인 방법
+        // id : bt 인것의 클릭이벤트가 발생하면 콜백함수 활성.
+        document.querySelector("#bt").onclick = (evt)=>{
+            let xhr = new XMLHttpRequest();
+                xhr.open("get","/api/dest"); // .open(method, url)
+                            // 일반적으로 ajax를 처리하는 용도의 url path를 api인 암묵적인 룰 해놓음
+                xhr.onload = function(req,evt){
+                    console.log("load",req.target.response);
+                                    //app.get에서 돌려준 res.send값이 req.target.response로 들어와서 f12에 console에 표출
+                }
+                xhr.onerror = function(req,evt){
+                    console.log("err",req)
+                }
+                xhr.send();
+                console.log("send 완료")
+        };
+
+    </script>
+    
+</body>
+</html>

@@ -69,8 +69,9 @@
                 <textarea name="post"></textarea>
             </div>
             <div>
-                <%for(let i =0; i<=5 ; i++ ){%>
+                <%for(let i =0; i<=10 ; i++ ){%>
                     <img src="" width="50" height="50"  id="image<%=i%>" style="display : none"/> 
+                                    <!--사진이 첨부 안되있을때는 표출안하게하고-->
                 <%}%>
                 <input type="file" name="attaches" accept="image/*" onchange="preview(event);" multiple/>
             </div>
@@ -82,32 +83,33 @@
     <!--게시글 보여주기-->
     <%if(post){%>
         <%post.forEach(article=>{%>
-            <%if(article.public === "public") {%>
-                <div class="article">
-                    <div id="inline">
-                        <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
-                        <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
-                        <a href="/article/view?unique=<%=article._id%>&id=<%=article.writerId%>" style="display: inline;">상세보기</a>
-                    </div>
-
-                    <div>
-                        <p><%=article.post%></p>
-                    </div>
-
-                    <%if(article.attaches){%>
-                        <% article.attaches.forEach(elm =>{%>
-                            <div >
-                                <img src=<%=elm%> width="200" height="200" >
-                            </div>
-                        <%})%>
+            <div class="article">
+                <div id="inline">
+                    <span><img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline; border-radius : 70%"></span> 
+                    <span style = "color: rgb(18, 105, 18);"><b><%=article.writerId%></b></span> <span style="font-size: 2px; color: gray;">@<%=article.writerName%> </span>
+                    <%if(article.public == "private"){ %>
+                        <p style="font-size: 5px; color: red; display: inline;"><b>⛔ 비공개</b></p>
                     <%}%>
-
-                    <div>
-                        <p style="display: inline;">🗨 <%=article.comments.length%></p>
-                        <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
-                    </div>
+                    <a href="/article/detail?unique=<%=article._id%>&id=<%=article.writerId%>" style="display: inline;">상세보기</a>
                 </div>
-            <%}%>
+
+                <div>
+                    <p><%=article.post%></p>
+                </div>
+
+                <%if(article.attaches){%>
+                    <% article.attaches.forEach(elm =>{%>
+                        <div >
+                            <img src=<%=elm%> width="200" height="200" >
+                        </div>
+                    <%})%>
+                <%}%>
+
+                <div>
+                    <p style="display: inline;">🗨 <%=article.comments.length%></p>
+                    <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+                </div>
+            </div>
         <%})%>
     <%}%>
     <script>
@@ -121,6 +123,8 @@
                     reader.onload = function(rst){   //읽는 작업이 끝나면 function 실행(콜백개념). 
                         document.querySelector(`#image${idx}`).src = rst.target.result;
                         document.querySelector(`#image${idx}`).style.display = "";
+                        //콜백으로 이미지1~10 속성의 src에는 elm에 해당되는 배열값을 URL로 읽은게 넣어지게되고.
+                        //그 src가 넣어지면 style의 display부분의 none 값을 ""으로 초기화시킨다.
                     }
                 });
             }
