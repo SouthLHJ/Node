@@ -77,7 +77,8 @@ async function findByIdArticle(valId,valUniqeid){
     const article = articleConnect();
     if(valUniqeid){
         return await article.find({writerId : valId, _id : new mongodb.ObjectId(valUniqeid)}).sort("createdAt",-1).toArray();
-    }else{
+    }
+    else{
         return await article.find({writerId : valId}).sort("createdAt",-1).toArray();
     }
 }
@@ -90,10 +91,16 @@ async function deleteByIdArticle(valUniqeid){
 
 }
 
+async function insertArticleComment(valUniqeid,obj){
+    const article = articleConnect();
+
+    return await article.updateOne({_id : new mongodb.ObjectId(valUniqeid)}, {$set : {"comments": obj }} )
+}
+
 //객체를 exports한다.
 module.exports = {
     //account
     insertOne,     findAll,        findById,         deleteById,        updateById, updateUserImage ,
     //article
-    insertArticle , findAllArticle, findByIdArticle, deleteByIdArticle
+    insertArticle , findAllArticle, findByIdArticle, deleteByIdArticle , insertArticleComment ,
 };

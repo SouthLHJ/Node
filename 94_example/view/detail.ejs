@@ -48,35 +48,93 @@
         border-color: rgb(1, 66, 1) ;
         border-radius: 5px;
     }
+    #cmtBt{
+        background-color: rgb(1, 66, 1);
+        color: white;
+        border-color: rgb(1, 66, 1) ;
+        border-radius: 5px;
+    }
 </style>
 <body>
     <!--상세보기 본문-->
-    <%if(post){%>
-        <%post.forEach(article=>{%>
-            <div class="article">
-                <div id="inline">
-                    <img src=<%=article.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline;">
-                    <p style="display: inline;"><b><%=article.writerId%></b></p> <p style="display: inline; font-size: 2px;">@<%=article.writerName%></p>
-                </div>
+    <div class="article">
+        <div id="inline">
+            <span><img src=<%=post.writerImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline; border-radius : 70%"></span> 
+            <span style = "color: rgb(18, 105, 18);"><b><%=post.writerId%></b></span> <span style="font-size: 2px; color: gray;">@<%=post.writerName%> </span>
+        </div>
 
-                <div>
-                    <p><%=article.post%></p>
-                </div>
+        <div>
+            <p><%=post.post%></p>
+        </div>
 
-                <%if(article.attaches){%>
-                    <% article.attaches.forEach(elm =>{%>
-                        <div >
-                            <img src=<%=elm%> width="200" height="200" >
-                        </div>
-                    <%})%>
-                <%}%>
-
-                <div>
-                    <p style="display: inline;">🗨 <%=article.comments.length%></p>
-                    <p style="display: inline; font-size: 10px;"><%=new Date(article.createdAt).toLocaleString()%></p>
+        <%if(post.attaches){%>
+            <% post.attaches.forEach(elm =>{%>
+                <div >
+                    <img src=<%=elm%> width="200" height="200" >
                 </div>
-            </div>
-        <%})%>
-    <%}%>
+            <%})%>
+        <%}%>
+
+        <div>
+            <p style="display: inline;">🗨 <%=post.comments.length%></p>
+            <p style="display: inline; font-size: 10px;"><%=new Date(post.createdAt).toLocaleString()%></p>
+        </div>
+    </div>
+    
+
+    <!--본문의 댓글 달기-->
+    <div class="article">
+        <p><b>@<%=post.writerName%>님에게 답글하기</b></p>
+        <input id="postId" type="hidden" value="<%=post._id%>" />
+        <input id="writerId" type="hidden" value="<%=post.writerId%>" />
+        <textarea id="cmt"></textarea>
+        <input id="cmtBt" type="button" value="답글달기"></button>
+    </div>
+
+    <!--댓글들 불러오기-->
+    <div class="comment_list">
+        <%if(post.comments.length !== 0){%>
+            <% postComments.forEach((elm)=>{%>
+                <div class="article">
+                    <span><img src=<%=elm.cmtImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline; border-radius : 70%"></span> 
+                    <span style = "color: rgb(18, 105, 18);"><b><%=elm.cmtID%></b></span> <span style="font-size: 2px; color: gray;">@<%=elm.cmtName%> </span>
+                    <p style="display: inline-block; font-size: 10px;"><%=new Date(elm.createdAt).toLocaleString()%></p>
+                    <p ><%=elm.comment%></p> 
+                </div>
+            <%})%>
+        <%}%>
+    </div>
+
+    <script>
+        document.querySelector("#cmtBt").onclick = (evt)=>{
+            const data = {
+                comment : document.querySelector("#cmt").value,
+                postId : document.querySelector("#postId").value,
+                writerId : document.querySelector("#writerId").value,
+            }
+            fetch("/article/api/comment",{
+                method : "post", //전달 방식
+                body : JSON.stringify(data), //body로 전달할 내용
+                headers : {
+                    "Content-type" : "application/json"
+                }
+            })
+            .then((res)=>{
+                return res.json();
+            }).then((rst)=>{
+                console.log(rst)
+                let newComment = document.createElement("div");
+                let cmtImage = rst.cmtImage ?? "/user/static/default.jpg"
+                newComment.innerHTML = `
+                <span><img src=${cmtImage} width="30" height="30" style="display: inline; border-radius : 70%"></span> 
+                <span style = "color: rgb(18, 105, 18);"><b>${rst.cmtId}</b></span> <span style="font-size: 2px; color: gray;">@${rst.cmtName}</span>
+                <p style="display: inline-block; font-size: 10px;">${new Date(rst.createdAt).toLocaleString()}</p>
+                <p >${rst.comment}</p> 
+                `
+                newComment.className = "article"
+                document.querySelector(".comment_list").appendChild(newComment);
+            })
+        }
+    </script>
 </body>
 </html>

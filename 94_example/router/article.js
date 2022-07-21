@@ -6,13 +6,15 @@ const fs = require("fs");
 const router = express.Router();
 
 const accounts = require("../collection/accounts");
+const apiRouter = require("../router/api");
 
 let user;
 //셋팅
 
 //미들웨어
     //post body
-router.use(express.urlencoded({extended:true})); 
+router.use(express.urlencoded({extended:true}));
+
     //사진첨부
 router.use("/static",express.static(path.join(__dirname,"..","static")))
 
@@ -24,6 +26,7 @@ router.use(async(req,res,next)=>{
     }
     next();
 });
+router.use("/api",apiRouter);
 
 
 //라우팅
@@ -88,8 +91,11 @@ router.post("/upload",profileUpload.array("attaches"),(req,res)=>{
 
 router.get("/detail",async(req,res)=>{
     let post = await accounts.findByIdArticle(req.query.id,req.query.unique);
+    // console.log(post[0]);
+    console.log(Array.isArray(post[0].comments));
     res.render("detail",{
-        post : post,
+        post : post[0],
+        postComments : post[0].comments,
     })
 })
 

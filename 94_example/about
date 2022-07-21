@@ -73,5 +73,9 @@
 
     /article
         /detail
-            상세보기에서 덧글 다는걸 AJAX로 표현하게 하자.
+         상세보기에서 덧글 다는걸 AJAX로 표현하게 하자.
+            /api/comment
+             코멘트에.. [{cmtID : user.id, cmtName : user.name, cmtImage : user.image,
+                         comment : comment, createdAt : Date.now() },]
+
     
