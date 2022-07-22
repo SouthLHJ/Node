@@ -94,13 +94,20 @@ async function deleteByIdArticle(valUniqeid){
 async function insertArticleComment(valUniqeid,obj){
     const article = articleConnect();
 
-    return await article.updateOne({_id : new mongodb.ObjectId(valUniqeid)}, {$set : {"comments": obj }} )
+    return await article.updateOne({_id : new mongodb.ObjectId(valUniqeid)}, {$push : {"comments": obj }} )
+}
+
+async function deleteArticleComment(valUniqeid,cmt_id){
+    const article = articleConnect();
+
+    // return await article.findOneAndUpdate({_id : new mongodb.ObjectId(valUniqeid)}, {$pull : {"comments": {"cmd_id" : cmt_id} }})
+    return await article.updateOne({_id : new mongodb.ObjectId(valUniqeid)}, {$pull : { comments : {cmt_id : cmt_id} }} );
 }
 
 //객체를 exports한다.
 module.exports = {
     //account
-    insertOne,     findAll,        findById,         deleteById,        updateById, updateUserImage ,
+    insertOne,     findAll,        findById,         deleteById,         updateById,            updateUserImage ,
     //article
-    insertArticle , findAllArticle, findByIdArticle, deleteByIdArticle , insertArticleComment ,
+    insertArticle , findAllArticle, findByIdArticle, deleteByIdArticle , insertArticleComment , deleteArticleComment
 };

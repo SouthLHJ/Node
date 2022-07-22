@@ -48,14 +48,30 @@
         border-color: rgb(1, 66, 1) ;
         border-radius: 5px;
     }
-    #cmtBt{
+    #cmtBt , #cmtDeleteBt, #cmtEditBt{
         background-color: rgb(1, 66, 1);
         color: white;
         border-color: rgb(1, 66, 1) ;
         border-radius: 5px;
+        margin-left: 10px;
     }
+    #cmtBt:hover , #cmtDeleteBt:hover , #cmtEditBt:hover{
+        background-color: rgb(0, 14, 0);
+        color: white;
+        border-color: rgb(0, 14, 0);
+        border-radius: 5px;
+        margin-left: 10px;
+        
+    }
+    
 </style>
 <body>
+    <h2>상세보기</h2>
+    <div>
+        <form method="get" action="/article/home">
+            <button type="submit">뒤로가기</button>
+        </form>
+    </div>
     <!--상세보기 본문-->
     <div class="article">
         <div id="inline">
@@ -76,7 +92,7 @@
         <%}%>
 
         <div>
-            <p style="display: inline;">🗨 <%=post.comments.length%></p>
+            <p class="comments_length" style="display: inline;">🗨 <%=post.comments.length%></p>
             <p style="display: inline; font-size: 10px;"><%=new Date(post.createdAt).toLocaleString()%></p>
         </div>
     </div>
@@ -88,29 +104,35 @@
         <input id="postId" type="hidden" value="<%=post._id%>" />
         <input id="writerId" type="hidden" value="<%=post.writerId%>" />
         <textarea id="cmt"></textarea>
-        <input id="cmtBt" type="button" value="답글달기"></button>
+        <input id="cmtBt" type="button" value="답글달기" style="margin-left: 0px;"></button>
     </div>
 
     <!--댓글들 불러오기-->
     <div class="comment_list">
         <%if(post.comments.length !== 0){%>
-            <% postComments.forEach((elm)=>{%>
-                <div class="article">
+            <% postComments.forEach((elm,idx)=>{%>
+                <div class="article" id="<%=elm.cmt_id%>">
+                    <input id="cmtIdx" type="hidden" value="<%=idx%>"/>
+                    <%if(elm.cmtId == sessionUser){%>
+                        <input id="cmtDeleteBt" type="button" value="삭제" style="float: right;" />
+                        <input id="cmtEditBt" type="button" value="수정" style="float: right;"/>
+                    <%}%>
                     <span><img src=<%=elm.cmtImage??"/user/static/default.jpg"%> width="30" height="30" style="display: inline; border-radius : 70%"></span> 
-                    <span style = "color: rgb(18, 105, 18);"><b><%=elm.cmtID%></b></span> <span style="font-size: 2px; color: gray;">@<%=elm.cmtName%> </span>
+                    <span style = "color: rgb(18, 105, 18);"><b><%=elm.cmtId%></b></span> <span style="font-size: 2px; color: gray;">@<%=elm.cmtName%> </span>
                     <p style="display: inline-block; font-size: 10px;"><%=new Date(elm.createdAt).toLocaleString()%></p>
-                    <p ><%=elm.comment%></p> 
+                    <p class="comment" ><%=elm.comment%></p> 
                 </div>
             <%})%>
         <%}%>
     </div>
 
     <script>
+        //답글달기 이벤트
         document.querySelector("#cmtBt").onclick = (evt)=>{
             const data = {
                 comment : document.querySelector("#cmt").value,
                 postId : document.querySelector("#postId").value,
-                writerId : document.querySelector("#writerId").value,
+                // writerId : document.querySelector("#writerId").value,
             }
             fetch("/article/api/comment",{
                 method : "post", //전달 방식
@@ -120,21 +142,80 @@
                 }
             })
             .then((res)=>{
+                //받은 값 : comment객체 문자열형태
                 return res.json();
             }).then((rst)=>{
                 console.log(rst)
                 let newComment = document.createElement("div");
                 let cmtImage = rst.cmtImage ?? "/user/static/default.jpg"
                 newComment.innerHTML = `
+                <input id="cmtIdx" type="hidden" value="${rst.cmt_id}"/>
+                <input id="cmtDeleteBt" type="button" value="삭제" style="float: right;"/>
+                <input id="cmtEditBt" type="button" value="수정" style="float: right;"/>
                 <span><img src=${cmtImage} width="30" height="30" style="display: inline; border-radius : 70%"></span> 
                 <span style = "color: rgb(18, 105, 18);"><b>${rst.cmtId}</b></span> <span style="font-size: 2px; color: gray;">@${rst.cmtName}</span>
                 <p style="display: inline-block; font-size: 10px;">${new Date(rst.createdAt).toLocaleString()}</p>
                 <p >${rst.comment}</p> 
                 `
-                newComment.className = "article"
+                newComment.className = "article";
+                newComment.id = `cmt${rst.cmt_id}`;
+                newComment.addEventListener("click", addDeleteEvent)
                 document.querySelector(".comment_list").appendChild(newComment);
+
+                //text-area 비우기
+                document.querySelector("#cmt").value = "";
+                //답글 갯수 리뉴얼
+                let length = document.querySelector(".comments_length").textContent;
+                length=Number(length.split(" ")[1]);
+                document.querySelector(".comments_length").textContent = `🗨 ${length+1}`;
             })
         }
+        
+        //답글 삭제 이벤트
+        let deleteBts = document.querySelectorAll("#cmtDeleteBt");
+        [].forEach.call(deleteBts, (deleteBt)=>{
+            deleteBt.addEventListener("click", addDeleteEvent)
+        })
+
+        function addDeleteEvent(evt){
+            console.log("삭제 눌림")
+            let cmtIdx = evt.target.parentNode.id;
+            console.log(cmtIdx)
+            const data = {
+                cmtIdx : cmtIdx,
+                postId : document.querySelector("#postId").value,
+                // writerId : document.querySelector("#writerId").value,
+            }
+            fetch("/article/api/dltComment",{
+                method : "post",
+                body : JSON.stringify(data),
+                headers : {
+                    "Content-type" : "application/json"
+                }
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((rst)=>{
+                // console.log(rst)
+                if(rst.success){
+                    let article = document.getElementById(`${rst.cmtIdx}`);
+                                    //와 진짜 ... querySelector는 id값이 숫자로 시작하면 인식 못한다. 그래서 getElementById로함
+                    // console.log(rst.cmtIdx);
+                    // console.log(article);
+                    // while (article.hasChildNodes()) {
+                    //     article.removeChild(article.firstChild);
+                    // }
+                    article.parentNode.removeChild(article);
+                    let length = document.querySelector(".comments_length").textContent;
+                    length=Number(length.split(" ")[1]);
+                    document.querySelector(".comments_length").textContent = `🗨 ${length-1}`;
+                }
+            })
+        }
+        
+        //답글 수정 이벤트
+
     </script>
 </body>
 </html>

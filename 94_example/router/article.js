@@ -96,6 +96,7 @@ router.get("/detail",async(req,res)=>{
     res.render("detail",{
         post : post[0],
         postComments : post[0].comments,
+        sessionUser : user.id
     })
 })
 
