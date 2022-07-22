@@ -1,0 +1,31 @@
+boot
+
+
+<div>
+    <div>
+        <h4>
+            <%=user.name %> @<%=user.id%>
+        </h4>
+        
+        <img src="<%=user.image ?? '/profile/default.png' %>" style="width: 180px;" id="image"/>
+    </div>
+    <form action="/user/profile" method="post" enctype="multipart/form-data">
+        <input type="file" name="profile" accept="image/*" onchange="preview(event);" />
+        <button type="submit">적용</button>
+    </form>
+</div>
+<script>
+    function preview(evt) {
+        if(evt.target.files && evt.target.files[0]) {
+            console.log(evt.target.files[0]);
+            let reader = new FileReader();  // browser  host 객체
+            
+            reader.readAsDataURL(evt.target.files[0]);  
+            reader.onload = function(rst) {
+                console.log(rst.target.result);
+                document.querySelector("#image").src = rst.target.result;
+            }
+        }
+    }
+
+</script>

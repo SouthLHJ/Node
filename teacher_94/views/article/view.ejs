@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        * {
+            font-family: "맑은 고딕";
+        }
+
+        .article {
+            padding: 5px;
+            border: 1px solid lightgrey;
+
+        }
+
+        hr {
+            margin: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs") %>
+        <div style="width: 90%; margin: auto;  ">
+            <!-- 글 작성 폼 부분-->
+            <a href="/article/home" style="text-decoration: none;"><span style="font-size: xx-large;">↩</span></a>
+            <span style="font-size: x-large;"> Home</span>
+
+            <div>
+                <!-- 글 목록 출력 부분 -->
+                <div style="margin : 1px 0px;" class="article">
+                    <div style="display: flex">
+                        <div style="padding: 3px;">
+                            <img src="<%=elm.writerImage ?? '/profile/default.png'%>"
+                                style="width: 40px; height: 40px; border-radius: 50%;"
+                                onerror="this.src='/profile/default.png'" />
+                        </div>
+                        <div>
+                            <div style="font-weight: bold">
+                                <%=elm.writerName %>
+                            </div>
+                            <div style="color: silver;">
+                                @<%=elm.writerId %>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div style="padding: 5px;">
+                        <div style="font-size :large; font-weight: 550;">
+                            <pre><%=elm.message%></pre>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap;">
+                            <% elm.attaches.forEach(url=> { %>
+                                <div>
+                                    <img src="<%=url%>" height="200px"
+                                        style="border: 1px solid silver; border-radius: 10%; padding: 1px; margin: 3px;" />
+                                </div>
+                                <% })%>
+                        </div>
+                        <div>
+                            <span style="color: gray; font-size: large;">
+                                <%=elm.createdAt.toISOString()%>
+                            </span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div style=" border-bottom: 1px solid lavenderblush;">
+                        <div>
+                            <span>💬</span><span id="cnt"><%=elm.comments.length%></span>
+                            <span id="reload" onclick="sendReloadReq(event);" data-targetid="<%=elm._id.toString()%>">⌛</span></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div style=" border-bottom: 1px solid lavenderblush; display: flex;">
+                        <textarea id="message" style="width: 70%; resize: none; height: 50px; padding: 3px;"></textarea>
+                        <button type="button" style="margin-left: 5px" 
+                            data-targetid="<%=elm._id.toString()%>"
+                            onclick="sendAddReq(event);">댓글</button>
+                    </div>
+                    <!--
+                    <form action="/article/addComment" method="post" 
+                        style=" border-bottom: 1px solid lavenderblush; display: flex;">
+                        <input type="hidden" name="targetId" value="<%=elm._id.toString()%>" />
+                        <textarea name="message" style="width: 70%; resize: none; height: 50px; padding: 3px;"></textarea>
+                        <button type="submit" style="margin-left: 5px">댓글</button>
+                    </form>
+                    -->
+                </div> 
+            </div>
+            <div id="comments">
+
+            </div>
+        </div>
+        </div>
+        <script>
+            async function sendAddReq(event) {
+                let targetId = event.target.dataset.targetid;
+                document.querySelector("#message").value;
+                let message = event.target.previousElementSibling.value;
+                console.log(targetId, message);
+                // 댓글 등록을 처리해주는 /api  라우트로  요청을 AJAX 로 처리
+                let data = { targetId, message }
+                let response = await fetch("/api/article/comment", {
+                    method: "post", body: JSON.stringify(data),
+                    headers: { "Content-type": "application/json" }
+                });
+                let result = await response.json();
+                if(result.success) {
+                    event.target.previousElementSibling.value = "";
+                    document.querySelector("#cnt").textContent = result.comments.length;
+                    
+                    let articles = result.comments.reverse().map((elm)=>{
+                        let html = `<div style="margin:4px">  
+                                <div>
+                                    <b>${elm.commenterName}</b> (@${elm.commenterId}) | ${elm.message}
+                                </div>
+                                <div>
+                                    <small>${new Date(elm.createdAt).toLocaleString()} | </small>
+                                </div>
+                            </div>`;
+                            return html;
+                    });
+                    let htmls = articles.join("");
+                    document.querySelector("#comments").innerHTML = htmls;
+                }
+            }
+
+            async function sendReloadReq(event) {
+                let targetId = event.target.dataset.targetid;
+                // 댓글 목록을 보내주는 / api  라우트로  요청을 AJAX  로
+                let response = await fetch("/api/article/comment?targetId="+targetId, {
+                    method: "get"
+                });
+                let result = await response.json();
+                if(result.success) {
+                    event.target.previousElementSibling.value = "";
+                    document.querySelector("#cnt").textContent = result.comments.length;
+                    let articles = result.comments.reverse().map((elm)=>{
+                        let html = `<div style="margin:4px">  
+                                <div>
+                                    <b>${elm.commenterName}</b> (@${elm.commenterId}) | ${elm.message}
+                                </div>
+                                <div>   
+                                    <small>${new Date(elm.createdAt).toLocaleString()} | </small>
+                                </div>
+                            </div>`;
+                            return html;
+                    });
+                    let htmls = articles.join("");
+                    document.querySelector("#comments").innerHTML = htmls;
+
+                }
+            }
+
+            !function() {
+                document.querySelector("#reload").dispatchEvent(new MouseEvent("click"));
+                setInterval( ()=>{
+                    document.querySelector("#reload").dispatchEvent(new MouseEvent("click"));
+                }, 10000);
+
+            }();
+        </script>
+</body>
+
+
+</html>

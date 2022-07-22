@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        .signup input{
+            padding: 5px;
+            width: 97%;
+        }
+        .signup button {
+            padding: 5px;
+            width: 100%;
+        }
+
+        .signup select {
+            padding: 5px;
+        }
+
+        .signup div {
+            margin: 10px 0px 10px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs"); %>
+    <div style="width: 480px; margin: auto;">
+        <div>
+            <h2>당신의 계정을 생성하세요.</h2>
+        </div>
+        <div class="signup">
+            <form action="/account/signup" method="post" autocomplete="off" onsubmit="valid(event);">
+                <div>
+                    <input type="text" name="id" placeholder="아이디" onfocusout="idcheck(event);" />
+                    <span style="font-size: small;"></span>
+                   
+                </div>
+                <div>
+                    <input type="password" name="pass" placeholder="비밀번호" />
+                </div>
+                <div>
+                    <input type="text" name="name" placeholder="이름" />
+                </div>
+                <div>
+                    <input type="text" name="contact" placeholder="휴대폰" />
+                </div>
+                <div>
+                    <div>
+                        <span style="font-weight: bold; font-size: small;">생년월일</span>
+                    </div>
+                    <select name="month" style="width: 30%;">
+                        <option value="">월</option>
+                        <% for(let i=1; i<=12; i++) {%>
+                            <option value="<%=i%>">
+                                <%=i%>월
+                            </option>
+                            <%}%>
+                    </select>
+                    <select name="day" style="width: 30%;">
+                        <option value="">일</option>
+                        <% for(let i=1; i<=31; i++) {%>
+                            <option value="<%=i%>">
+                                <%=i%>일
+                            </option>
+                            <%}%>
+                    </select>
+                    <select name="year" style="width: 37.5%;">
+                        <option value="">년</option>
+                        <% for(let i=2022; i>=1950; i--) {%>
+                            <option value="<%=i%>">
+                                <%=i%>년
+                            </option>
+                            <%}%>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit">가입</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        async function idcheck(evt) {
+            let value = evt.target.value;
+            if(value.trim().length > 0 ) {
+                let response = await fetch("/api/account/idcheck?id="+value, {method:"get"});
+                let result =  await response.json();
+                let span = evt.target.nextElementSibling;
+                if(result.success) {
+                    span.style.color="green";
+                    span.textContent = "사용 가능";
+                } else {
+                    span.style.color="red";
+                    span.textContent = "사용 불가능";
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

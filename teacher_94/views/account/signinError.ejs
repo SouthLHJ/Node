@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        .signup input {
+            padding: 5px;
+            width: 97%;
+        }
+
+        .signup button {
+            padding: 5px;
+            width: 100%;
+        }
+
+        .signup select {
+            padding: 5px;
+        }
+
+        .signup div {
+            margin: 10px 0px 10px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs"); %>
+    <div style="width: 480px; margin: auto;">
+        <div>
+            <h2>Simple SNS에 로그인하기</h2>
+        </div>
+        <div class="signup">
+            <div style="color:tomato">
+                아이디 또는 비밀번호가 일치하지 않습니다.
+            </div>
+            <form action="/account/signin" method="post">
+                <div>
+                    <input type="text" name="loginid" placeholder="사용자 아이디" />
+                </div>
+                <div>
+                    <input type="password" name="loginpass" placeholder="사용자 비밀번호" />
+                </div>
+                <div>
+                    <button type="submit">다음</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

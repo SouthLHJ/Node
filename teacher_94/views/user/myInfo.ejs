@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple SNS</title>
+    <style>
+        .info {
+            margin: 5px;
+            text-align: center;
+            background-color: rgba(3, 199, 90, .08);
+            padding: 10px;
+           
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("../common/top.ejs", {src : "aaa"}); %>
+        <div style="width: 95%; margin: auto; display: flex;">
+            <div class="info">
+                <div>
+                    <img src="<%=user.image ?? '/profile/default.png'%>" style="border-radius: 30%; width: 120px;" />
+                    <form action="/user/profile" method="post" enctype="multipart/form-data">
+                        <input type="file" name="profile" accept="image/*" />
+                        <button type="submit">적용</button>
+                    </form>
+                </div>
+                <div style="margin-top: 10px">
+                    <span style="display: block; font-size: 1.5rem;">
+                        <%=user.name %>
+                    </span>
+                    <span style="font-size: small; color: silver;">
+                        @<%=user.id %>
+                    </span>
+                </div>
+                <div style="margin-top: 10px">
+                    <a href="/user/exit"><button type="button">로그아웃</button></a>
+                </div>
+            </div>
+           
+        </div>
+</body>
+
+</html>
