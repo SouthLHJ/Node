@@ -1,4 +1,6 @@
-
+* {
+    font-family: "맑은 고딕";
+}
 p{
     font-size: large;
     color: rgb(18, 105, 18);
