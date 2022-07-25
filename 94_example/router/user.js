@@ -10,7 +10,7 @@ const accounts = require("../collection/accounts");
 let user;
 //미들웨어
 router.use(express.urlencoded({"extended":true}));
-router.use("/static",express.static(path.join(__dirname,"..","static")));
+router.use("/static",express.static(path.join(__dirname,"..","static")))
 
 router.use(async(req,res,next)=>{
     if(!req.session.loggedIn){

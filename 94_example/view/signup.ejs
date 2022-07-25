@@ -5,22 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/default.css">
     <style>
-        * {
-            font-family: "맑은 고딕";
+        label{
+            display: block;
         }
-        p{
-            font-size: large;
-            color: rgb(18, 105, 18);
-        }
-        h2{
-            color: rgb(18, 105, 18);
-        }
-        button{
-            background-color: rgb(1, 66, 1);
-            color: white;
-            border-color: rgb(1, 66, 1) ;
-            border-radius: 5px;
+        form > div {
+            margin-bottom: 10px;
         }
     </style>
 
@@ -31,29 +23,29 @@
         <p style=" color: red;"><%=msg%></p>
         <form method="post" action="/account/signup" onsubmit="return chkPw()">
             <div>
-                <p>이름</p>
+                <label>이름</label>
                 <input type="text" name="name" placeholder="이름" style="width: 300px;"/>
             </div>
             <div>                
-                <p>아이디</p>
+                <label>아이디</label>
                 <input id="id" type="text" name="id" placeholder="아이디" style="width: 300px;"/>
                 <p id="idchk"></p><input type="hidden" id="idchkRst" name="idchkRSt"/>
             </div>
             <div>                
-                <p>비밀번호</p>
+                <label>비밀번호</label>
                 <input id="pw1" type="password" name="pw" placeholder="비밀번호" style="width: 300px;"/>
                 <input id="pw2" type="password"           placeholder="비밀번호확인" style="width: 300px;"/>
             </div>
             <div>                
-                <p>이메일</p>
+                <label>이메일</label>
                 <input type="text" name="email" placeholder="이메일" style="width: 300px;"/> <p></p>
             </div>
             <div>                
-                <p>전화번호</p>
+                <label>전화번호</label>
                 <input type="text" name="contact" placeholder="01012345678" style="width: 300px;"/><p></p>
             </div>
             <div>                
-                <p>생년월일</p>
+                <label>생년월일</label>
                 <input type="date" name="birth" placeholder="생년월일" style="width: 300px;"/>
             </div>
             <button type="submit" style="margin-top: 20px ;">회원가입</button>

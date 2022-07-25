@@ -14,8 +14,6 @@ let user;
 //미들웨어
     //post body
 router.use(express.urlencoded({extended:true}));
-
-    //사진첨부
 router.use("/static",express.static(path.join(__dirname,"..","static")))
 
 router.use(async(req,res,next)=>{

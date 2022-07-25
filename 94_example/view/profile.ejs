@@ -4,30 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/account/css.css"> 
+    <link rel="stylesheet" href="/css/account/css.css">
     <title>Profile</title>
-    <style>
-        
-        * {
-            font-family: "맑은 고딕";
-        }
-        p{
-            font-size: large;
-            color: rgb(18, 105, 18);
-        }
-        h2{
-            color: rgb(18, 105, 18);
-        }
-        button{
-            background-color: rgb(1, 66, 1);
-            color: white;
-            border-color: rgb(1, 66, 1) ;
-            border-radius: 5px;
-        }
-
-    </style>
+    
 </head>
 <body>
+    <%- include("./common/top.ejs")%>
     <p> <b><%=user.name%></b>님 회원 정보</p>
     <div style="margin-top: 20px ;">
         <form method="get" action="/user/mypage">
@@ -104,7 +86,26 @@
         }
 
         /*
+        <style>
         
+        * {
+            font-family: "맑은 고딕";
+        }
+        p{
+            font-size: large;
+            color: rgb(18, 105, 18);
+        }
+        h2{
+            color: rgb(18, 105, 18);
+        }
+        button{
+            background-color: rgb(1, 66, 1);
+            color: white;
+            border-color: rgb(1, 66, 1) ;
+            border-radius: 5px;
+        }
+
+    </style>
         */
     </script>
 </body>

@@ -5,30 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HomePage </title>
+    <link rel="stylesheet" href="/css/account/css.css">
 </head>
-<style>
-    * {
-            font-family: "맑은 고딕";
-        }
-    p{
-        font-size: large;
-        color: rgb(18, 105, 18);
-    }
-    h2{
-        width: 800px;
-        color: rgb(18, 105, 18);
-    }
-    button{
-        background-color: rgb(1, 66, 1);
-        color: white;
-        border-color: rgb(1, 66, 1) ;
-        border-radius: 5px;
-    }
-</style>
 <body>
-    <div>
-        <h2 style="background-color: rgb(1, 66, 1); color: white; padding: 10px;">Home</h2>
-    </div>
+    <%- include("./common/top.ejs")%>
     <div style="margin-bottom: 10px ;">
         <form method="get" action="/account/signin">
             <button type="submit">로그인</button>
